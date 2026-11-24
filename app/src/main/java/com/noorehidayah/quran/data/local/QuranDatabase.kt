@@ -330,7 +330,7 @@ class QuranDatabase(context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
         if (trimmed.isEmpty()) return emptyList()
 
         // Direct reference lookup e.g. "2:255" or "94:5"
-        if (Regex("^\d+:\d+$").matches(trimmed)) {
+        if (Regex("^\\d+:\\d+$").matches(trimmed)) {
             return getAyahsByIds(setOf(trimmed))
         }
 

@@ -105,10 +105,7 @@ fun AyahCard(
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     IconButton(onClick = {
-                        val copyText = "${ayah.arabic}
-
-${ayah.translationFor(cardLang)}
-(${surah?.nameEnglish ?: ""} ${ayah.id})"
+                        val copyText = "${ayah.arabic}\n\n${ayah.translationFor(cardLang)}\n(${surah?.nameEnglish ?: ""} ${ayah.id})"
                         val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                         cm.setPrimaryClip(ClipData.newPlainText("Ayah", copyText))
                         Toast.makeText(context, strings.copiedToast, Toast.LENGTH_SHORT).show()

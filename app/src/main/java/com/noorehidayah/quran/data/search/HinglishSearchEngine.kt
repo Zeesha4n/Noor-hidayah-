@@ -43,11 +43,11 @@ object HinglishSearchEngine {
     fun expandQueryTokens(rawQuery: String): List<String> {
         val cleaned = rawQuery
             .lowercase()
-            .replace(Regex("[^\p{L}\p{N}\s]"), " ")
+            .replace(Regex("[^\\p{L}\\p{N}\\s]"), " ")
             .trim()
         if (cleaned.isEmpty()) return emptyList()
 
-        val rawTokens = cleaned.split(Regex("\s+")).filter { it.length >= 2 }
+        val rawTokens = cleaned.split(Regex("\\s+")).filter { it.length >= 2 }
         if (rawTokens.isEmpty()) return listOf(cleaned)
 
         val expanded = linkedSetOf<String>()
@@ -77,7 +77,7 @@ object HinglishSearchEngine {
      */
     fun buildFtsMatchQuery(tokens: List<String>): String {
         return tokens
-            .map { it.replace(""", "").trim() }
+            .map { it.replace("\"", "").trim() }
             .filter { it.isNotEmpty() }
             .take(12)
             .joinToString(" OR ") { "${it}*" }
