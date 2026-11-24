@@ -1,0 +1,5 @@
+<resources>
+    <style name="Theme.NoorHidayah" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">#0D6E52</item>
+    </style>
+</resources>

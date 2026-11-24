@@ -1,0 +1,290 @@
+[
+  {
+    "ayahId": "1:1",
+    "fiqh": "Hanafi",
+    "sourceName": "Ma'ariful Quran / Tafsir al-Maturidi",
+    "english": "In the Hanafi school, Bismillah is an independent verse of the Quran revealed to separate Surahs, not counted as the first verse of Al-Fatihah itself. In Salah, it is recited silently before Al-Fatihah.",
+    "hinglish": "Hanafi fiqh ke mutabiq Bismillah Quran ki ek mustaqil ayat hai jo Surahs ko alag karne ke liye nazil hui, isse Surah Fatihah ka hissa nahi gina jata. Namaz mein isse aahista (dil mein) padha jata hai.",
+    "hindi": "हनफ़ी फ़िक़्ह के अनुसार बिस्मिल्लाह क़ुरआन की एक स्वतंत्र आयत है जो सूरतों को अलग करने के लिए नाज़िल हुई; नमाज़ में इसे आहिस्ता (चुपके से) पढ़ा जाता है।"
+  },
+  {
+    "ayahId": "1:1",
+    "fiqh": "Shafi'i",
+    "sourceName": "Tafsir al-Razi / Al-Majmu'",
+    "english": "In the Shafi'i school, Bismillah is counted as the first verse of Surah Al-Fatihah. Reciting it aloud in audible prayers (Fajr, Maghrib, Isha) is Sunnah, and omitting it invalidates Al-Fatihah in Salah.",
+    "hinglish": "Shafi'i fiqh ke mutabiq Bismillah Surah Fatihah ki pehli ayat hai. Jahri namaz (Fajr, Maghrib, Isha) mein isse buland aawaz se padhna Sunnat hai aur namaz mein iska padhna zaroori hai.",
+    "hindi": "शाफ़ई फ़िक़्ह के अनुसार बिस्मिल्लाह सूरह फ़ातिहा की पहली आयत है और जहरी नमाज़ों में इसे बुलंद आवाज़ से पढ़ना सुन्नत है।"
+  },
+  {
+    "ayahId": "1:1",
+    "fiqh": "Maliki",
+    "sourceName": "Tafsir al-Qurtubi",
+    "english": "In the classical Maliki view, Bismillah is not part of Surah Al-Fatihah nor recited aloud in obligatory prayers, though reciting it silently is permitted as a blessing when beginning recitation.",
+    "hinglish": "Maliki fiqh mein Bismillah ko Surah Fatihah ka hissa nahi mana jata aur farz namaz mein isse buland aawaz se nahi padha jata, albatta barkat ke liye tilawat se pehle padhna jaiz hai.",
+    "hindi": "मालिकी फ़िक़्ह के अनुसार बिस्मिल्लाह सूरह फ़ातिहा का हिस्सा नहीं है और फ़र्ज़ नमाज़ में इसे ज़ोर से नहीं पढ़ा जाता।"
+  },
+  {
+    "ayahId": "1:1",
+    "fiqh": "Hanbali",
+    "sourceName": "Tafsir Ibn Kathir / Al-Mughni",
+    "english": "In the Hanbali school, Bismillah is considered part of Surah Al-Fatihah and is recited silently in prayer before Al-Fatihah, reflecting the Sunnah of beginning every noble act with Allah's name.",
+    "hinglish": "Hanbali fiqh mein Bismillah ko Surah Fatihah ki ayat mana jata hai aur namaz mein isse aahista padhna Sunnat hai. Har achhe kaam ki shuruat Allah ke naam se karne ki takeed hai.",
+    "hindi": "हंबली फ़िक़्ह में बिस्मिल्लाह को सूरह फ़ातिहा की आयत माना जाता है और नमाज़ में इसे आहिस्ता पढ़ा जाता है।"
+  },
+  {
+    "ayahId": "1:1",
+    "fiqh": "Ja'fari",
+    "sourceName": "Tafsir al-Mizan / Al-Tusi",
+    "english": "In the Ja'fari school, Bismillah is an integral first verse of every Surah (except At-Tawbah). Reciting it aloud in Salah—especially in Fajr, Maghrib, and Isha—is strongly emphasized.",
+    "hinglish": "Ja'fari fiqh ke mutabiq Bismillah har Surah (siwaye Surah Taubah ke) ki pehli zaroori ayat hai. Namaz mein isse wazeh aur buland aawaz se padhne ki khas takeed hai.",
+    "hindi": "जाफ़री फ़िक़्ह के अनुसार बिस्मिल्लाह हर सूरह (तौबा के अलावा) की पहली आयत है और नमाज़ में इसे स्पष्ट रूप से पढ़ने की ताकीद है।"
+  },
+  {
+    "ayahId": "1:1",
+    "fiqh": "Ahl-e-Hadith",
+    "sourceName": "Tafsir Ahsanul Bayan / Ibn Kathir",
+    "english": "Following authentic narrations, Bismillah is recited silently before Al-Fatihah in prayer (with occasional aloud recitation permitted). It establishes complete reliance on Allah's mercy before any deed.",
+    "hinglish": "Sahih ahadees ki roshni mein namaz mein Bismillah aahista padhna afzal hai (kabhi buland padhna bhi jaiz hai). Yeh har kaam mein Allah ki rahmat aur madad talab karne ka tareeqa hai.",
+    "hindi": "सहीह हदीसों के अनुसार नमाज़ में बिस्मिल्लाह आहिस्ता पढ़ना अफ़ज़ल है और यह हर नेक काम से पहले अल्लाह की रहमत मांगने का ज़रिया है।"
+  },
+  {
+    "ayahId": "1:5",
+    "fiqh": "Hanafi",
+    "sourceName": "Ma'ariful Quran",
+    "english": "This verse is the heart of Al-Fatihah: exclusive worship (Ibadah) precedes seeking help (Isti'anah), teaching that obedience to Allah is the true foundation for divine assistance.",
+    "hinglish": "Yeh ayat Surah Fatihah ka nichod hai: ibadat ko madad maangne se pehle rakha gaya hai, jo sikhata hai ke Allah ki farmanbardari hi uski madad pane ka asli zaria hai.",
+    "hindi": "यह आयत सूरह फ़ातिहा का सार है: इबादत को मदद मांगने से पहले रखा गया है, जो सिखाता है कि अल्लाह की आज्ञाकारिता ही उसकी मदद का ज़रिया है।"
+  },
+  {
+    "ayahId": "1:5",
+    "fiqh": "Shafi'i",
+    "sourceName": "Tafsir al-Jalalayn",
+    "english": "Placing 'Iyyaka' (You alone) before the verb expresses exclusivity—devoting all worship and reliance solely to Allah while addressing Him directly in the second person.",
+    "hinglish": "'Iyyaka' (sirf Teri hi) ko pehle lane se khas maqsad yeh hai ke ibadat aur bharosa sirf aur sirf Allah ke liye hai, aur banda seedha apne Rab se mukhatib hota hai.",
+    "hindi": "'इय्याका' को पहले लाने से यह स्पष्ट होता है कि इबादत और भरोसा केवल अल्लाह ही के लिए है।"
+  },
+  {
+    "ayahId": "1:5",
+    "fiqh": "Maliki",
+    "sourceName": "Tafsir al-Qurtubi",
+    "english": "Al-Qurtubi explains that the plural 'we worship' teaches humility and unity of the Ummah—every believer prays on behalf of the entire community of worshippers.",
+    "hinglish": "Imam Qurtubi farmate hain ke 'hum ibadat karte hain' (jama ka seegha) ajizi aur ummat ke ittehad ka dars deta hai—har momin poori ummat ki taraf se dua karta hai.",
+    "hindi": "इमाम क़ुर्तुबी के अनुसार 'हम इबादत करते हैं' में बहुवचन का प्रयोग विनम्रता और उम्मत की एकता को दर्शाता है।"
+  },
+  {
+    "ayahId": "1:5",
+    "fiqh": "Hanbali",
+    "sourceName": "Tafsir Ibn Kathir / Madarij al-Salikin",
+    "english": "Ibn al-Qayyim notes that 'You we worship' cures hypocrisy (riya), and 'You we ask for help' cures arrogance (kibr), uniting sincerity and tawakkul.",
+    "hinglish": "Ibn al-Qayyim farmate hain ke 'Teri hi ibadat' dikhawe (riya) ka ilaj hai aur 'Tujh hi se madad' takabbur (ghuroor) ka ilaj hai.",
+    "hindi": "इब्न अल-क़य्यिम के अनुसार 'तेरी ही इबादत' दिखावे का इलाज है और 'तुझ ही से मदद' घमंड का इलाज है।"
+  },
+  {
+    "ayahId": "1:5",
+    "fiqh": "Ja'fari",
+    "sourceName": "Tafsir al-Mizan",
+    "english": "Allamah Tabataba'i explains that this verse marks the transition from praising Allah in the third person to intimate direct communion with Him, freeing the servant from servitude to anything other than Allah.",
+    "hinglish": "Allama Tabatabai bayan karte hain ke is ayat mein banda Allah ki tareef se seedhi munajat (baat-cheet) par aa jata hai aur ghair-Allah ki ghulami se aazad ho jata hai.",
+    "hindi": "अल्लामा तबातबाई के अनुसार यह आयत बंदे को सीधे अल्लाह से मुनाजात की अवस्था में ले आती है।"
+  },
+  {
+    "ayahId": "1:5",
+    "fiqh": "Ahl-e-Hadith",
+    "sourceName": "Tafsir Ahsanul Bayan",
+    "english": "Establishes pure Tawheed in both worship and supplication—seeking supernatural aid exclusively from Allah while using permissible worldly means with full trust in Him.",
+    "hinglish": "Yeh ayat khalis Tauheed ka elaan hai—ibadat aur ghaybi madad sirf Allah se maangi jaye, aur duniya ke jaiz asbab ikhtiyar karte hue bharosa sirf Allah par rakha jaye.",
+    "hindi": "यह आयत शुद्ध तौहीद को स्थापित करती है कि इबादत और ग़ैबी मदद केवल अल्लाह से ही मांगी जाए।"
+  },
+  {
+    "ayahId": "2:255",
+    "fiqh": "Hanafi",
+    "sourceName": "Ma'ariful Quran",
+    "english": "Known as the greatest verse in the Quran, Ayat al-Kursi summarizes Allah's absolute life, self-subsistence, knowledge, and sovereignty. Reciting it after every Fard Salah and before sleep brings continuous divine protection.",
+    "hinglish": "Ayat al-Kursi Quran ki sabse azeem ayat hai jo Allah ki zaat, ilm aur qudrat ko bayan karti hai. Har farz namaz ke baad aur sone se pehle isse padhna Allah ki hifazat ka zaria hai.",
+    "hindi": "आयतुल कुर्सी क़ुरआन की सबसे अज़ीम आयत है। हर फ़र्ज़ नमाज़ के बाद और सोने से पहले इसे पढ़ने से अल्लाह की हिफ़ाज़त मिलती है।"
+  },
+  {
+    "ayahId": "2:255",
+    "fiqh": "Shafi'i",
+    "sourceName": "Tafsir al-Razi",
+    "english": "Al-Hayy (Ever-Living) and Al-Qayyum (Self-Subsisting Sustainer) together affirm that every created thing depends on Allah at every instant, while He is free from fatigue, drowsiness, or need.",
+    "hinglish": "Al-Hayy aur Al-Qayyum ka matlab hai ke har makhlooq har lamhe Allah ki mohtaj hai, jabki Allah har tarah ki thakan, neend ya zaroorat se paak hai.",
+    "hindi": "अल-हय्य और अल-क़य्यूम का अर्थ है कि सारी सृष्टि हर पल अल्लाह पर निर्भर है, जबकि वह थकान और नींद से पाक है।"
+  },
+  {
+    "ayahId": "2:255",
+    "fiqh": "Maliki",
+    "sourceName": "Tafsir al-Qurtubi",
+    "english": "Intercession on the Day of Judgment occurs strictly by Allah's permission. His Kursi encompasses the heavens and earth, signifying His boundless majesty and guardianship.",
+    "hinglish": "Qayamat ke din sifarish sirf Allah ki ijazat se hogi. Uski Kursi ka aasmanon aur zameen par chhaya hona uski be-intiha azmat aur nigehbani ki daleel hai.",
+    "hindi": "क़यामत के दिन सिफ़ारिश केवल अल्लाह की अनुमति से होगी। उसकी कुर्सी उसकी असीम शक्ति और संरक्षण का प्रतीक है।"
+  },
+  {
+    "ayahId": "2:255",
+    "fiqh": "Hanbali",
+    "sourceName": "Tafsir Ibn Kathir",
+    "english": "Ibn Kathir cites the authentic Hadith of Ubayy ibn Ka'b confirming Ayat al-Kursi as the greatest verse, and Abu Hurairah's narration that reciting it at night appoints an angelic guardian until morning.",
+    "hinglish": "Ibn Kathir ne sahih hadees naqal ki hai ke raat ko sone se pehle Ayat al-Kursi padhne wale par Allah ki taraf se ek muhafiz (farishta) subah tak muqarrar rehta hai.",
+    "hindi": "इब्न कसीर के अनुसार रात को सोने से पहले आयतुल कुर्सी पढ़ने वाले की सुरक्षा के लिए सुबह तक एक फ़रिश्ता नियुक्त रहता है।"
+  },
+  {
+    "ayahId": "2:255",
+    "fiqh": "Ja'fari",
+    "sourceName": "Tafsir al-Mizan",
+    "english": "Highlights Allah's absolute Tawheed and knowledge of all past and future states. Narrations from the Ahl al-Bayt highly recommend reciting Ayat al-Kursi for protection during travel, sleep, and hardship.",
+    "hinglish": "Is ayat mein Allah ke mukammal ilm aur qudrat ka bayan hai. Ahl-e-Bayt ki riwayaat mein safar, neend aur pareshani ke waqt Ayat al-Kursi padhne ki badi fazilat aayi hai.",
+    "hindi": "इस आयत में अल्लाह के पूर्ण ज्ञान और प्रभुत्व का वर्णन है। सफ़र, नींद और कठिनाई में इसे पढ़ने की बड़ी फ़ज़ीलत बताई गई है।"
+  },
+  {
+    "ayahId": "2:255",
+    "fiqh": "Ahl-e-Hadith",
+    "sourceName": "Tafsir Ahsanul Bayan",
+    "english": "Refutes all forms of shirk and unauthorized intercession. Whoever recites it after every obligatory prayer has nothing standing between them and Paradise except death (Sunan an-Nasa'i).",
+    "hinglish": "Yeh ayat shirk aur be-ijazat sifarish ka radd karti hai. Hadees mein hai ke jo har farz namaz ke baad Ayat al-Kursi padhe, uske aur Jannat ke beech sirf maut ka fasla hai.",
+    "hindi": "हदीस के अनुसार जो व्यक्ति हर फ़र्ज़ नमाज़ के बाद आयतुल कुर्सी पढ़ता है, उसके और जन्नत के बीच केवल मृत्यु का फ़ासला होता है।"
+  },
+  {
+    "ayahId": "94:5",
+    "fiqh": "Hanafi",
+    "sourceName": "Ma'ariful Quran",
+    "english": "Arabic grammar repeats 'al-usr' (hardship) with the definite article 'al' (meaning the same single hardship) while 'yusran' (ease) is indefinite—meaning two eases accompany every single hardship.",
+    "hinglish": "Arabi qawaid ke mutabiq 'al-usr' (mushkil) ek hi hai jabki 'yusran' (aasani) do baar alag aayi hai—yani ek mushkil ke saath Allah do aasaniyan ata farmata hai.",
+    "hindi": "अरबी व्याकरण के अनुसार एक कठिनाई के साथ अल्लाह दो आसानियां प्रदान करता है, इसलिए निराश नहीं होना चाहिए।"
+  },
+  {
+    "ayahId": "94:5",
+    "fiqh": "Shafi'i",
+    "sourceName": "Tafsir al-Razi",
+    "english": "Note that Allah says 'WITH hardship' (ma'a), not merely 'after' it—meaning relief and spiritual ease are already woven alongside the trial for the patient believer.",
+    "hinglish": "Ghaur karein Allah ne 'mushkil ke SAATH' (ma'a) farmaya hai, sirf 'baad' nahi—yani sabr karne wale momin ke liye mushkil ke andar hi aasani aur sukoon chhupa hota hai.",
+    "hindi": "ध्यान दें कि अल्लाह ने कठिनाई के 'साथ' आसानी फ़रमाया है, जिसका अर्थ है कि धैर्य रखने वाले के लिए संकट के भीतर ही राहत होती है।"
+  },
+  {
+    "ayahId": "94:5",
+    "fiqh": "Maliki",
+    "sourceName": "Tafsir al-Qurtubi",
+    "english": "Cites the famous saying attributed to Ibn Mas'ud and the Prophet (PBUH): 'One hardship can never overcome two eases.' A source of hope during anxiety and financial or personal difficulty.",
+    "hinglish": "Mashhoor qaul hai ke 'ek mushkil kabhi do aasaniyon par ghalib nahi aa sakti.' Yeh ayat pareshani, tangi aur gham mein ummeed ki sabse badi kiran hai.",
+    "hindi": "प्रसिद्ध कथन है कि 'एक कठिनाई कभी दो आसानियों पर हावी नहीं हो सकती।' यह आयत निराशा और तनाव में आशा देती है।"
+  },
+  {
+    "ayahId": "94:5",
+    "fiqh": "Hanbali",
+    "sourceName": "Tafsir Ibn Kathir",
+    "english": "Reassures the believer that worldly trials are temporary and accompanied by both immediate inner strength and eventual relief in this world and the Hereafter.",
+    "hinglish": "Momin ko tasalli di gayi hai ke duniya ki takleef aarzi (temporary) hai, aur iske saath hi dil ki himmat aur duniya-o-akhirat ki aasani judi hui hai.",
+    "hindi": "यह आयत विश्वास दिलाती है कि सांसारिक कठिनाइयाँ अस्थायी हैं और उनके साथ राहत और धैर्य की शक्ति जुड़ी है।"
+  },
+  {
+    "ayahId": "94:5",
+    "fiqh": "Ja'fari",
+    "sourceName": "Tafsir al-Mizan",
+    "english": "Affirms a universal divine law (Sunnatullah) that difficulty is never permanent; steadfastness and turning to Allah transform hardship into spiritual elevation and ease.",
+    "hinglish": "Yeh Allah ka aam qanoon (Sunnatullah) hai ke koi bhi mushkil hamesha nahi rehti; sabr aur Allah ki taraf ruju mushkil ko aasani aur bulandi mein badal deta hai.",
+    "hindi": "यह अल्लाह का सार्वभौमिक नियम है कि कठिनाई स्थायी नहीं होती; धैर्य और ईश्वर की ओर रुजू इसे आसानी में बदल देता है।"
+  },
+  {
+    "ayahId": "94:5",
+    "fiqh": "Ahl-e-Hadith",
+    "sourceName": "Tafsir Ahsanul Bayan",
+    "english": "Reminds Muslims not to lose hope during crisis. Every hardship is paired with divine mercy and multiple avenues of ease for those who remain patient and grateful.",
+    "hinglish": "Musalman ko yaad dilata hai ke kisi bhi haal mein na-ummeed na ho. Har mushkil ke saath Allah ki rahmat aur aasani ke kayi raste khulte hain.",
+    "hindi": "यह मुसलमानों को याद दिलाता है कि संकट में निराश न हों; हर कठिनाई के साथ अल्लाह की रहमत और आसानी के रास्ते खुलते हैं।"
+  },
+  {
+    "ayahId": "103:3",
+    "fiqh": "Hanafi",
+    "sourceName": "Ma'ariful Quran",
+    "english": "Four pillars save humanity from ultimate loss: true Faith (Iman), righteous deeds (Amal-e-Salih), mutually encouraging truth, and mutually encouraging patience (Sabr).",
+    "hinglish": "Insan ko nuqsan se bachane ke 4 usool hain: saccha Eeman, nek amal, ek-dusre ko haq ki naseehat, aur ek-dusre ko sabr ki takeed.",
+    "hindi": "इंसान को घाटे से बचाने के चार आधार हैं: सच्चा ईमान, नेक अमल, हक़ की नसीहत और सब्र की ताकीद।"
+  },
+  {
+    "ayahId": "103:3",
+    "fiqh": "Shafi'i",
+    "sourceName": "Imam ash-Shafi'i (quoted in Tafsir Ibn Kathir)",
+    "english": "Imam ash-Shafi'i famously remarked: 'If Allah had revealed no other proof to His creation besides this Surah (Al-Asr), it would have been sufficient for them.'",
+    "hinglish": "Imam Shafi'i ka mashhoor qaul hai: 'Agar Allah ne insanon ki hidayat ke liye sirf yahi Surah Al-Asr nazil farmayi hoti, toh yeh unke liye kaafi thi.'",
+    "hindi": "इमाम शाफ़ई ने फ़रमाया कि यदि अल्लाह ने मार्गदर्शन के लिए केवल यही सूरह अल-अस्र नाज़िल की होती, तो यह लोगों के लिए पर्याप्त होती।"
+  },
+  {
+    "ayahId": "103:3",
+    "fiqh": "Maliki",
+    "sourceName": "Tafsir al-Qurtubi",
+    "english": "True salvation is not merely individualistic—believers must also support their families and communities in truth and perseverance during trials.",
+    "hinglish": "Kamyabi sirf akela nek banne mein nahi, balki apne ghar walon aur samaj ko bhi sacchai aur sabr par qayam rakhne mein hai.",
+    "hindi": "सफलता केवल व्यक्तिगत नेकी में नहीं, बल्कि समाज को भी सत्य और धैर्य की सलाह देने में है।"
+  },
+  {
+    "ayahId": "103:3",
+    "fiqh": "Hanbali",
+    "sourceName": "Tafsir Ibn Kathir",
+    "english": "The Companions would not part from one another until they recited Surah Al-Asr to each other, reminding themselves of the fleeting value of time and the necessity of Sabr.",
+    "hinglish": "Sahaba-e-Kiram jab ek-dusre se mil kar rukhsat hote toh Surah Al-Asr sunaya karte the taaki waqt ki qadr aur sabr ki yaad taza rahe.",
+    "hindi": "सहाबा एक-दूसरे से विदा होते समय सूरह अल-अस्र सुनाया करते थे ताकि समय के मूल्य और सब्र की याद बनी रहे।"
+  },
+  {
+    "ayahId": "103:3",
+    "fiqh": "Ja'fari",
+    "sourceName": "Tafsir al-Mizan",
+    "english": "Time continuously consumes human life; only those who invest it in firm faith, righteous action, and collective commitment to truth and patience emerge victorious.",
+    "hinglish": "Waqt musalsal insan ki umr ko kam kar raha hai; sirf wahi kamyab hain jo isse eeman, nek kaam, haq aur sabr mein lagate hain.",
+    "hindi": "समय निरंतर जीवन को कम कर रहा है; केवल वही सफल हैं जो इसे ईमान, नेक कर्म, सत्य और धैर्य में लगाते हैं।"
+  },
+  {
+    "ayahId": "103:3",
+    "fiqh": "Ahl-e-Hadith",
+    "sourceName": "Tafsir Ahsanul Bayan",
+    "english": "Combines personal reform (Iman & good deeds) with social reform (calling to truth & patience), showing that patience is essential when standing up for what is right.",
+    "hinglish": "Zati islah (eeman aur nek amal) aur samaji islah (haq aur sabr ki dawat) dono ko jama kiya gaya hai, kyunki haq par chalne ke liye sabr lazmi hai.",
+    "hindi": "इसमें व्यक्तिगत सुधार और सामाजिक सुधार दोनों को जोड़ा गया है, क्योंकि सत्य पर चलने के लिए धैर्य अनिवार्य है।"
+  },
+  {
+    "ayahId": "112:1",
+    "fiqh": "Hanafi",
+    "sourceName": "Ma'ariful Quran",
+    "english": "Surah Al-Ikhlas is equivalent to one-third of the Quran in reward and theme because it purely defines Tawheed (the Oneness of Allah), one of the three core pillars of the Quran.",
+    "hinglish": "Surah Ikhlas sawab aur mazmoon ke lihaz se ek-tihai (1/3) Quran ke barabar hai kyunki yeh khalis Tauheed ko bayan karti hai.",
+    "hindi": "सूरह इख़लास सवाब में एक-तिहाई क़ुरआन के बराबर है क्योंकि यह शुद्ध तौहीद (अल्लाह की एकता) का वर्णन करती है।"
+  },
+  {
+    "ayahId": "112:1",
+    "fiqh": "Shafi'i",
+    "sourceName": "Tafsir al-Razi",
+    "english": "'Ahad' denotes absolute, indivisible Oneness—unlike ordinary numerical 'one', Allah has no parts, no partner, and no equal in essence or attributes.",
+    "hinglish": "'Ahad' ka matlab aisi yaktaai hai jiske koi hisse ya shareek nahi ho sakte—Allah apni zaat aur sifat mein bilkul akela aur bemisal hai.",
+    "hindi": "'अहद' का अर्थ ऐसी पूर्ण एकता है जिसका कोई साझीदार या समान नहीं है।"
+  },
+  {
+    "ayahId": "112:1",
+    "fiqh": "Maliki",
+    "sourceName": "Tafsir al-Qurtubi",
+    "english": "Revealed in response to questions about Allah's lineage; it categorically negates any anthropomorphism, offspring, or origin.",
+    "hinglish": "Yeh Surah us waqt nazil hui jab mushrikeen ne Allah ke nasab ke bare mein poocha; isne har tarah ki aulaad ya mushabehat ka qata'i inkaar kar diya.",
+    "hindi": "यह सूरह अल्लाह के स्वरूप के प्रश्न के उत्तर में नाज़िल हुई और हर प्रकार की तुलना या संतान का खंडन करती है।"
+  },
+  {
+    "ayahId": "112:1",
+    "fiqh": "Hanbali",
+    "sourceName": "Tafsir Ibn Kathir",
+    "english": "Loving and frequently reciting Surah Al-Ikhlas is a cause for Allah's love and entry into Paradise, as affirmed in Sahih al-Bukhari.",
+    "hinglish": "Sahih Bukhari ki hadees ke mutabiq Surah Ikhlas se mohabbat rakhna aur isse kasrat se padhna Allah ki mohabbat aur Jannat mein dakhile ka sabab hai.",
+    "hindi": "सहीह बुख़ारी के अनुसार सूरह इख़लास से प्रेम रखना और इसे बार-बार पढ़ना अल्लाह के प्रेम और जन्नत का कारण है।"
+  },
+  {
+    "ayahId": "112:1",
+    "fiqh": "Ja'fari",
+    "sourceName": "Tafsir al-Mizan",
+    "english": "Presents the purest philosophical and scriptural expression of Divine Unity (Tawhid al-Dhat), describing Allah as As-Samad—the Absolute Refuge upon whom all existence depends.",
+    "hinglish": "Yeh Tauheed-e-Zaat ka sabse paak bayan hai jo batata hai ke Allah 'As-Samad' hai—yani poori kayenat usi ki taraf ruju karti hai aur woh kisi ka mohtaj nahi.",
+    "hindi": "यह तौहीद का सबसे शुद्ध वर्णन है कि अल्लाह 'अस-समद' है—पूरी सृष्टि उस पर निर्भर है और वह किसी का मोहताज नहीं।"
+  },
+  {
+    "ayahId": "112:1",
+    "fiqh": "Ahl-e-Hadith",
+    "sourceName": "Tafsir Ahsanul Bayan",
+    "english": "Recommended to recite along with Al-Falaq and An-Nas (the three Quls) three times each morning and evening and before sleep for complete spiritual protection.",
+    "hinglish": "Subah-shaam aur sone se pehle Surah Ikhlas, Falaq aur Nas (3 Qul) teen-teen baar padhna har tarah ke shar se hifazat ka masnoon tareeqa hai.",
+    "hindi": "सुबह-शाम और सोने से पहले सूरह इख़लास, फ़लक़ और नास को तीन-तीन बार पढ़ना हर बुराई से हिफ़ाज़त का मसनून तरीका है।"
+  }
+]

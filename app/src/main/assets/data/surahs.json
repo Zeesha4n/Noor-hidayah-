@@ -1,0 +1,1028 @@
+[
+  {
+    "surahNumber": 1,
+    "nameArabic": "الفاتحة",
+    "nameEnglish": "Al-Fatihah",
+    "nameHinglish": "Al-Fatihah (Shuruat)",
+    "nameHindi": "अल-फ़ातिहा",
+    "ayahCount": 7,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 2,
+    "nameArabic": "البقرة",
+    "nameEnglish": "Al-Baqarah",
+    "nameHinglish": "Al-Baqarah (Gaay)",
+    "nameHindi": "अल-बक़रा",
+    "ayahCount": 286,
+    "revelationType": "Madani"
+  },
+  {
+    "surahNumber": 3,
+    "nameArabic": "آل عمران",
+    "nameEnglish": "Aal-E-Imran",
+    "nameHinglish": "Aal-e-Imran",
+    "nameHindi": "आल-ए-इमरान",
+    "ayahCount": 200,
+    "revelationType": "Madani"
+  },
+  {
+    "surahNumber": 4,
+    "nameArabic": "النساء",
+    "nameEnglish": "An-Nisa",
+    "nameHinglish": "An-Nisa (Aurtein)",
+    "nameHindi": "अन-निसा",
+    "ayahCount": 176,
+    "revelationType": "Madani"
+  },
+  {
+    "surahNumber": 5,
+    "nameArabic": "المائدة",
+    "nameEnglish": "Al-Ma'idah",
+    "nameHinglish": "Al-Maidah (Dastarkhwan)",
+    "nameHindi": "अल-माइदा",
+    "ayahCount": 120,
+    "revelationType": "Madani"
+  },
+  {
+    "surahNumber": 6,
+    "nameArabic": "الأنعام",
+    "nameEnglish": "Al-An'am",
+    "nameHinglish": "Al-An'am (Maweshi)",
+    "nameHindi": "अल-अनआम",
+    "ayahCount": 165,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 7,
+    "nameArabic": "الأعراف",
+    "nameEnglish": "Al-A'raf",
+    "nameHinglish": "Al-A'raf (Bulandiyan)",
+    "nameHindi": "अल-आराफ़",
+    "ayahCount": 206,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 8,
+    "nameArabic": "الأنفال",
+    "nameEnglish": "Al-Anfal",
+    "nameHinglish": "Al-Anfal (Maal-e-Ghanimat)",
+    "nameHindi": "अल-अनफ़ाल",
+    "ayahCount": 75,
+    "revelationType": "Madani"
+  },
+  {
+    "surahNumber": 9,
+    "nameArabic": "التوبة",
+    "nameEnglish": "At-Tawbah",
+    "nameHinglish": "At-Taubah (Tauba)",
+    "nameHindi": "अत-तौबा",
+    "ayahCount": 129,
+    "revelationType": "Madani"
+  },
+  {
+    "surahNumber": 10,
+    "nameArabic": "يونس",
+    "nameEnglish": "Yunus",
+    "nameHinglish": "Yunus",
+    "nameHindi": "यूनुस",
+    "ayahCount": 109,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 11,
+    "nameArabic": "هود",
+    "nameEnglish": "Hud",
+    "nameHinglish": "Hud",
+    "nameHindi": "हूद",
+    "ayahCount": 123,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 12,
+    "nameArabic": "يوسف",
+    "nameEnglish": "Yusuf",
+    "nameHinglish": "Yusuf",
+    "nameHindi": "यूसुफ़",
+    "ayahCount": 111,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 13,
+    "nameArabic": "الرعد",
+    "nameEnglish": "Ar-Ra'd",
+    "nameHinglish": "Ar-Ra'd (Garaj)",
+    "nameHindi": "अर-रद",
+    "ayahCount": 43,
+    "revelationType": "Madani"
+  },
+  {
+    "surahNumber": 14,
+    "nameArabic": "إبراهيم",
+    "nameEnglish": "Ibrahim",
+    "nameHinglish": "Ibrahim",
+    "nameHindi": "इब्राहीम",
+    "ayahCount": 52,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 15,
+    "nameArabic": "الحجر",
+    "nameEnglish": "Al-Hijr",
+    "nameHinglish": "Al-Hijr",
+    "nameHindi": "अल-हिज्र",
+    "ayahCount": 99,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 16,
+    "nameArabic": "النحل",
+    "nameEnglish": "An-Nahl",
+    "nameHinglish": "An-Nahl (Shahad ki Makkhi)",
+    "nameHindi": "अन-नहल",
+    "ayahCount": 128,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 17,
+    "nameArabic": "الإسراء",
+    "nameEnglish": "Al-Isra",
+    "nameHinglish": "Al-Isra / Bani Israil",
+    "nameHindi": "अल-इसरा",
+    "ayahCount": 111,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 18,
+    "nameArabic": "الكهف",
+    "nameEnglish": "Al-Kahf",
+    "nameHinglish": "Al-Kahf (Ghaar)",
+    "nameHindi": "अल-कहफ़",
+    "ayahCount": 110,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 19,
+    "nameArabic": "مريم",
+    "nameEnglish": "Maryam",
+    "nameHinglish": "Maryam",
+    "nameHindi": "मरयम",
+    "ayahCount": 98,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 20,
+    "nameArabic": "طه",
+    "nameEnglish": "Taha",
+    "nameHinglish": "Ta-Ha",
+    "nameHindi": "ता-हा",
+    "ayahCount": 135,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 21,
+    "nameArabic": "الأنبياء",
+    "nameEnglish": "Al-Anbiya",
+    "nameHinglish": "Al-Anbiya (Nabi)",
+    "nameHindi": "अल-अंबिया",
+    "ayahCount": 112,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 22,
+    "nameArabic": "الحج",
+    "nameEnglish": "Al-Hajj",
+    "nameHinglish": "Al-Hajj",
+    "nameHindi": "अल-हज",
+    "ayahCount": 78,
+    "revelationType": "Madani"
+  },
+  {
+    "surahNumber": 23,
+    "nameArabic": "المؤمنون",
+    "nameEnglish": "Al-Mu'minun",
+    "nameHinglish": "Al-Muminun (Eeman wale)",
+    "nameHindi": "अल-मोमिनून",
+    "ayahCount": 118,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 24,
+    "nameArabic": "النور",
+    "nameEnglish": "An-Nur",
+    "nameHinglish": "An-Noor (Roshni)",
+    "nameHindi": "अन-नूर",
+    "ayahCount": 64,
+    "revelationType": "Madani"
+  },
+  {
+    "surahNumber": 25,
+    "nameArabic": "الفرقان",
+    "nameEnglish": "Al-Furqan",
+    "nameHinglish": "Al-Furqan (Haq aur Batil)",
+    "nameHindi": "अल-फ़ुरक़ान",
+    "ayahCount": 77,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 26,
+    "nameArabic": "الشعراء",
+    "nameEnglish": "Ash-Shu'ara",
+    "nameHinglish": "Ash-Shu'ara (Shayar)",
+    "nameHindi": "अश-शुअरा",
+    "ayahCount": 227,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 27,
+    "nameArabic": "النمل",
+    "nameEnglish": "An-Naml",
+    "nameHinglish": "An-Naml (Cheenti)",
+    "nameHindi": "अन-नम्ल",
+    "ayahCount": 93,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 28,
+    "nameArabic": "القصص",
+    "nameEnglish": "Al-Qasas",
+    "nameHinglish": "Al-Qasas (Qisse)",
+    "nameHindi": "अल-क़सस",
+    "ayahCount": 88,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 29,
+    "nameArabic": "العنكبوت",
+    "nameEnglish": "Al-Ankabut",
+    "nameHinglish": "Al-Ankabut (Makdi)",
+    "nameHindi": "अल-अनकबूत",
+    "ayahCount": 69,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 30,
+    "nameArabic": "الروم",
+    "nameEnglish": "Ar-Rum",
+    "nameHinglish": "Ar-Rum",
+    "nameHindi": "अर-रूम",
+    "ayahCount": 60,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 31,
+    "nameArabic": "لقمان",
+    "nameEnglish": "Luqman",
+    "nameHinglish": "Luqman",
+    "nameHindi": "लुक़मान",
+    "ayahCount": 34,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 32,
+    "nameArabic": "السجدة",
+    "nameEnglish": "As-Sajdah",
+    "nameHinglish": "As-Sajdah",
+    "nameHindi": "अस-सजदा",
+    "ayahCount": 30,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 33,
+    "nameArabic": "الأحزاب",
+    "nameEnglish": "Al-Ahzab",
+    "nameHinglish": "Al-Ahzab",
+    "nameHindi": "अल-अहज़ाब",
+    "ayahCount": 73,
+    "revelationType": "Madani"
+  },
+  {
+    "surahNumber": 34,
+    "nameArabic": "سبأ",
+    "nameEnglish": "Saba",
+    "nameHinglish": "Saba",
+    "nameHindi": "सबा",
+    "ayahCount": 54,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 35,
+    "nameArabic": "فاطر",
+    "nameEnglish": "Fatir",
+    "nameHinglish": "Fatir (Paida karne wala)",
+    "nameHindi": "फ़ातिर",
+    "ayahCount": 45,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 36,
+    "nameArabic": "يس",
+    "nameEnglish": "Ya-Sin",
+    "nameHinglish": "Yaseen",
+    "nameHindi": "यासीन",
+    "ayahCount": 83,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 37,
+    "nameArabic": "الصافات",
+    "nameEnglish": "As-Saffat",
+    "nameHinglish": "As-Saffat",
+    "nameHindi": "अस-साफ़्फ़ात",
+    "ayahCount": 182,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 38,
+    "nameArabic": "ص",
+    "nameEnglish": "Sad",
+    "nameHinglish": "Saad",
+    "nameHindi": "साद",
+    "ayahCount": 88,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 39,
+    "nameArabic": "الزمر",
+    "nameEnglish": "Az-Zumar",
+    "nameHinglish": "Az-Zumar (Giroh)",
+    "nameHindi": "अज़-ज़ुमर",
+    "ayahCount": 75,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 40,
+    "nameArabic": "غافر",
+    "nameEnglish": "Ghafir",
+    "nameHinglish": "Ghafir / Al-Mumin",
+    "nameHindi": "ग़ाफ़िर",
+    "ayahCount": 85,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 41,
+    "nameArabic": "فصلت",
+    "nameEnglish": "Fussilat",
+    "nameHinglish": "Fussilat / Ha-Meem Sajdah",
+    "nameHindi": "फ़ुस्सिलत",
+    "ayahCount": 54,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 42,
+    "nameArabic": "الشورى",
+    "nameEnglish": "Ash-Shura",
+    "nameHinglish": "Ash-Shura (Mashwara)",
+    "nameHindi": "अश-शूरा",
+    "ayahCount": 53,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 43,
+    "nameArabic": "الزخرف",
+    "nameEnglish": "Az-Zukhruf",
+    "nameHinglish": "Az-Zukhruf (Sona)",
+    "nameHindi": "अज़-ज़ुख़रुफ़",
+    "ayahCount": 89,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 44,
+    "nameArabic": "الدخان",
+    "nameEnglish": "Ad-Dukhan",
+    "nameHinglish": "Ad-Dukhan (Dhuan)",
+    "nameHindi": "अद-दुख़ान",
+    "ayahCount": 59,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 45,
+    "nameArabic": "الجاثية",
+    "nameEnglish": "Al-Jathiyah",
+    "nameHinglish": "Al-Jathiyah",
+    "nameHindi": "अल-जासिया",
+    "ayahCount": 37,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 46,
+    "nameArabic": "الأحقاف",
+    "nameEnglish": "Al-Ahqaf",
+    "nameHinglish": "Al-Ahqaf",
+    "nameHindi": "अल-अहक़ाफ़",
+    "ayahCount": 35,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 47,
+    "nameArabic": "محمد",
+    "nameEnglish": "Muhammad",
+    "nameHinglish": "Muhammad",
+    "nameHindi": "मुहम्मद",
+    "ayahCount": 38,
+    "revelationType": "Madani"
+  },
+  {
+    "surahNumber": 48,
+    "nameArabic": "الفتح",
+    "nameEnglish": "Al-Fath",
+    "nameHinglish": "Al-Fath (Jeet)",
+    "nameHindi": "अल-फ़तह",
+    "ayahCount": 29,
+    "revelationType": "Madani"
+  },
+  {
+    "surahNumber": 49,
+    "nameArabic": "الحجرات",
+    "nameEnglish": "Al-Hujurat",
+    "nameHinglish": "Al-Hujurat (Kamre)",
+    "nameHindi": "अल-हुजुरात",
+    "ayahCount": 18,
+    "revelationType": "Madani"
+  },
+  {
+    "surahNumber": 50,
+    "nameArabic": "ق",
+    "nameEnglish": "Qaf",
+    "nameHinglish": "Qaaf",
+    "nameHindi": "क़ाफ़",
+    "ayahCount": 45,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 51,
+    "nameArabic": "الذاريات",
+    "nameEnglish": "Adh-Dhariyat",
+    "nameHinglish": "Adh-Dhariyat",
+    "nameHindi": "अज़-ज़ारियात",
+    "ayahCount": 60,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 52,
+    "nameArabic": "الطور",
+    "nameEnglish": "At-Tur",
+    "nameHinglish": "At-Tur",
+    "nameHindi": "अत-तूर",
+    "ayahCount": 49,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 53,
+    "nameArabic": "النجم",
+    "nameEnglish": "An-Najm",
+    "nameHinglish": "An-Najm (Sitara)",
+    "nameHindi": "अन-नज्म",
+    "ayahCount": 62,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 54,
+    "nameArabic": "القمر",
+    "nameEnglish": "Al-Qamar",
+    "nameHinglish": "Al-Qamar (Chaand)",
+    "nameHindi": "अल-क़मर",
+    "ayahCount": 55,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 55,
+    "nameArabic": "الرحمن",
+    "nameEnglish": "Ar-Rahman",
+    "nameHinglish": "Ar-Rahman (Meharban)",
+    "nameHindi": "अर-रहमान",
+    "ayahCount": 78,
+    "revelationType": "Madani"
+  },
+  {
+    "surahNumber": 56,
+    "nameArabic": "الواقعة",
+    "nameEnglish": "Al-Waqi'ah",
+    "nameHinglish": "Al-Waqi'ah (Qayamat)",
+    "nameHindi": "अल-वाक़िया",
+    "ayahCount": 96,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 57,
+    "nameArabic": "الحديد",
+    "nameEnglish": "Al-Hadid",
+    "nameHinglish": "Al-Hadid (Loha)",
+    "nameHindi": "अल-हदीद",
+    "ayahCount": 29,
+    "revelationType": "Madani"
+  },
+  {
+    "surahNumber": 58,
+    "nameArabic": "المجادلة",
+    "nameEnglish": "Al-Mujadila",
+    "nameHinglish": "Al-Mujadila",
+    "nameHindi": "अल-मुजादिला",
+    "ayahCount": 22,
+    "revelationType": "Madani"
+  },
+  {
+    "surahNumber": 59,
+    "nameArabic": "الحشر",
+    "nameEnglish": "Al-Hashr",
+    "nameHinglish": "Al-Hashr",
+    "nameHindi": "अल-हश्र",
+    "ayahCount": 24,
+    "revelationType": "Madani"
+  },
+  {
+    "surahNumber": 60,
+    "nameArabic": "الممتحنة",
+    "nameEnglish": "Al-Mumtahanah",
+    "nameHinglish": "Al-Mumtahanah",
+    "nameHindi": "अल-मुम्तहिना",
+    "ayahCount": 13,
+    "revelationType": "Madani"
+  },
+  {
+    "surahNumber": 61,
+    "nameArabic": "الصف",
+    "nameEnglish": "As-Saf",
+    "nameHinglish": "As-Saff",
+    "nameHindi": "अस-सफ़",
+    "ayahCount": 14,
+    "revelationType": "Madani"
+  },
+  {
+    "surahNumber": 62,
+    "nameArabic": "الجمعة",
+    "nameEnglish": "Al-Jumu'ah",
+    "nameHinglish": "Al-Jumu'ah (Jumma)",
+    "nameHindi": "अल-जुमा",
+    "ayahCount": 11,
+    "revelationType": "Madani"
+  },
+  {
+    "surahNumber": 63,
+    "nameArabic": "المنافقون",
+    "nameEnglish": "Al-Munafiqun",
+    "nameHinglish": "Al-Munafiqun",
+    "nameHindi": "अल-मुनाफ़िक़ून",
+    "ayahCount": 11,
+    "revelationType": "Madani"
+  },
+  {
+    "surahNumber": 64,
+    "nameArabic": "التغابن",
+    "nameEnglish": "At-Taghabun",
+    "nameHinglish": "At-Taghabun",
+    "nameHindi": "अत-तग़ाबुन",
+    "ayahCount": 18,
+    "revelationType": "Madani"
+  },
+  {
+    "surahNumber": 65,
+    "nameArabic": "الطلاق",
+    "nameEnglish": "At-Talaq",
+    "nameHinglish": "At-Talaq",
+    "nameHindi": "अत-तलाक़",
+    "ayahCount": 12,
+    "revelationType": "Madani"
+  },
+  {
+    "surahNumber": 66,
+    "nameArabic": "التحريم",
+    "nameEnglish": "At-Tahrim",
+    "nameHinglish": "At-Tahrim",
+    "nameHindi": "अत-तहरीम",
+    "ayahCount": 12,
+    "revelationType": "Madani"
+  },
+  {
+    "surahNumber": 67,
+    "nameArabic": "الملك",
+    "nameEnglish": "Al-Mulk",
+    "nameHinglish": "Al-Mulk (Badshahat)",
+    "nameHindi": "अल-मुल्क",
+    "ayahCount": 30,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 68,
+    "nameArabic": "القلم",
+    "nameEnglish": "Al-Qalam",
+    "nameHinglish": "Al-Qalam (Qalam)",
+    "nameHindi": "अल-क़लम",
+    "ayahCount": 52,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 69,
+    "nameArabic": "الحاقة",
+    "nameEnglish": "Al-Haqqah",
+    "nameHinglish": "Al-Haqqah",
+    "nameHindi": "अल-हाक़्क़ा",
+    "ayahCount": 52,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 70,
+    "nameArabic": "المعارج",
+    "nameEnglish": "Al-Ma'arij",
+    "nameHinglish": "Al-Ma'arij",
+    "nameHindi": "अल-मआरिज",
+    "ayahCount": 44,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 71,
+    "nameArabic": "نوح",
+    "nameEnglish": "Nuh",
+    "nameHinglish": "Nuh",
+    "nameHindi": "नूह",
+    "ayahCount": 28,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 72,
+    "nameArabic": "الجن",
+    "nameEnglish": "Al-Jinn",
+    "nameHinglish": "Al-Jinn",
+    "nameHindi": "अल-जिन्न",
+    "ayahCount": 28,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 73,
+    "nameArabic": "المزمل",
+    "nameEnglish": "Al-Muzzammil",
+    "nameHinglish": "Al-Muzzammil",
+    "nameHindi": "अल-मुज़म्मिल",
+    "ayahCount": 20,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 74,
+    "nameArabic": "المدثر",
+    "nameEnglish": "Al-Muddaththir",
+    "nameHinglish": "Al-Muddaththir",
+    "nameHindi": "अल-मुद्दस्सिर",
+    "ayahCount": 56,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 75,
+    "nameArabic": "القيامة",
+    "nameEnglish": "Al-Qiyamah",
+    "nameHinglish": "Al-Qiyamah",
+    "nameHindi": "अल-क़ियामा",
+    "ayahCount": 40,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 76,
+    "nameArabic": "الإنسان",
+    "nameEnglish": "Al-Insan",
+    "nameHinglish": "Al-Insan / Ad-Dahr",
+    "nameHindi": "अल-इंसान",
+    "ayahCount": 31,
+    "revelationType": "Madani"
+  },
+  {
+    "surahNumber": 77,
+    "nameArabic": "المرسلات",
+    "nameEnglish": "Al-Mursalat",
+    "nameHinglish": "Al-Mursalat",
+    "nameHindi": "अल-मुरसलात",
+    "ayahCount": 50,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 78,
+    "nameArabic": "النبأ",
+    "nameEnglish": "An-Naba",
+    "nameHinglish": "An-Naba (Khabar)",
+    "nameHindi": "अन-नबा",
+    "ayahCount": 40,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 79,
+    "nameArabic": "النازعات",
+    "nameEnglish": "An-Nazi'at",
+    "nameHinglish": "An-Nazi'at",
+    "nameHindi": "अन-नाज़िआत",
+    "ayahCount": 46,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 80,
+    "nameArabic": "عبس",
+    "nameEnglish": "Abasa",
+    "nameHinglish": "Abasa",
+    "nameHindi": "अ-ब-स",
+    "ayahCount": 42,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 81,
+    "nameArabic": "التكوير",
+    "nameEnglish": "At-Takwir",
+    "nameHinglish": "At-Takwir",
+    "nameHindi": "अत-तकवीर",
+    "ayahCount": 29,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 82,
+    "nameArabic": "الانفطار",
+    "nameEnglish": "Al-Infitar",
+    "nameHinglish": "Al-Infitar",
+    "nameHindi": "अल-इनफ़ितार",
+    "ayahCount": 19,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 83,
+    "nameArabic": "المطففين",
+    "nameEnglish": "Al-Mutaffifin",
+    "nameHinglish": "Al-Mutaffifin",
+    "nameHindi": "अल-मुतफ़्फ़िफ़ीन",
+    "ayahCount": 36,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 84,
+    "nameArabic": "الانشقاق",
+    "nameEnglish": "Al-Inshiqaq",
+    "nameHinglish": "Al-Inshiqaq",
+    "nameHindi": "अल-इनशिक़ाक़",
+    "ayahCount": 25,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 85,
+    "nameArabic": "البروج",
+    "nameEnglish": "Al-Buruj",
+    "nameHinglish": "Al-Buruj",
+    "nameHindi": "अल-बुरूज",
+    "ayahCount": 22,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 86,
+    "nameArabic": "الطارق",
+    "nameEnglish": "At-Tariq",
+    "nameHinglish": "At-Tariq",
+    "nameHindi": "अत-तारिक़",
+    "ayahCount": 17,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 87,
+    "nameArabic": "الأعلى",
+    "nameEnglish": "Al-A'la",
+    "nameHinglish": "Al-A'la",
+    "nameHindi": "अल-आला",
+    "ayahCount": 19,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 88,
+    "nameArabic": "الغاشية",
+    "nameEnglish": "Al-Ghashiyah",
+    "nameHinglish": "Al-Ghashiyah",
+    "nameHindi": "अल-ग़ाशिया",
+    "ayahCount": 26,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 89,
+    "nameArabic": "الفجر",
+    "nameEnglish": "Al-Fajr",
+    "nameHinglish": "Al-Fajr (Subah)",
+    "nameHindi": "अल-फ़ज्र",
+    "ayahCount": 30,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 90,
+    "nameArabic": "البلد",
+    "nameEnglish": "Al-Balad",
+    "nameHinglish": "Al-Balad (Shahar)",
+    "nameHindi": "अल-बलद",
+    "ayahCount": 20,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 91,
+    "nameArabic": "الشمس",
+    "nameEnglish": "Ash-Shams",
+    "nameHinglish": "Ash-Shams (Suraj)",
+    "nameHindi": "अश-शम्स",
+    "ayahCount": 15,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 92,
+    "nameArabic": "الليل",
+    "nameEnglish": "Al-Layl",
+    "nameHinglish": "Al-Layl (Raat)",
+    "nameHindi": "अल-लैल",
+    "ayahCount": 21,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 93,
+    "nameArabic": "الضحى",
+    "nameEnglish": "Ad-Duha",
+    "nameHinglish": "Ad-Duha (Chasht)",
+    "nameHindi": "अद-दुहा",
+    "ayahCount": 11,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 94,
+    "nameArabic": "الشرح",
+    "nameEnglish": "Ash-Sharh",
+    "nameHinglish": "Ash-Sharh / Al-Inshirah (Aasani)",
+    "nameHindi": "अश-शरह",
+    "ayahCount": 8,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 95,
+    "nameArabic": "التين",
+    "nameEnglish": "At-Tin",
+    "nameHinglish": "At-Tin (Anjeer)",
+    "nameHindi": "अत-तीन",
+    "ayahCount": 8,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 96,
+    "nameArabic": "العلق",
+    "nameEnglish": "Al-Alaq",
+    "nameHinglish": "Al-Alaq (Iqra)",
+    "nameHindi": "अल-अलक़",
+    "ayahCount": 19,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 97,
+    "nameArabic": "القدر",
+    "nameEnglish": "Al-Qadr",
+    "nameHinglish": "Al-Qadr (Shab-e-Qadr)",
+    "nameHindi": "अल-क़द्र",
+    "ayahCount": 5,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 98,
+    "nameArabic": "البينة",
+    "nameEnglish": "Al-Bayyinah",
+    "nameHinglish": "Al-Bayyinah",
+    "nameHindi": "अल-बय्यिना",
+    "ayahCount": 8,
+    "revelationType": "Madani"
+  },
+  {
+    "surahNumber": 99,
+    "nameArabic": "الزلزلة",
+    "nameEnglish": "Az-Zalzalah",
+    "nameHinglish": "Az-Zalzalah",
+    "nameHindi": "अज़-ज़लज़ला",
+    "ayahCount": 8,
+    "revelationType": "Madani"
+  },
+  {
+    "surahNumber": 100,
+    "nameArabic": "العاديات",
+    "nameEnglish": "Al-Adiyat",
+    "nameHinglish": "Al-Adiyat",
+    "nameHindi": "अल-आदियात",
+    "ayahCount": 11,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 101,
+    "nameArabic": "القارعة",
+    "nameEnglish": "Al-Qari'ah",
+    "nameHinglish": "Al-Qari'ah",
+    "nameHindi": "अल-क़ारिया",
+    "ayahCount": 11,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 102,
+    "nameArabic": "التكاثر",
+    "nameEnglish": "At-Takathur",
+    "nameHinglish": "At-Takathur",
+    "nameHindi": "अत-तकासुर",
+    "ayahCount": 8,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 103,
+    "nameArabic": "العصر",
+    "nameEnglish": "Al-Asr",
+    "nameHinglish": "Al-Asr (Waqt / Sabr)",
+    "nameHindi": "अल-अस्र",
+    "ayahCount": 3,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 104,
+    "nameArabic": "الهمزة",
+    "nameEnglish": "Al-Humazah",
+    "nameHinglish": "Al-Humazah",
+    "nameHindi": "अल-हुमज़ा",
+    "ayahCount": 9,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 105,
+    "nameArabic": "الفيل",
+    "nameEnglish": "Al-Fil",
+    "nameHinglish": "Al-Fil (Haathi)",
+    "nameHindi": "अल-फ़ील",
+    "ayahCount": 5,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 106,
+    "nameArabic": "قريش",
+    "nameEnglish": "Quraysh",
+    "nameHinglish": "Quraish",
+    "nameHindi": "क़ुरैश",
+    "ayahCount": 4,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 107,
+    "nameArabic": "الماعون",
+    "nameEnglish": "Al-Ma'un",
+    "nameHinglish": "Al-Ma'un",
+    "nameHindi": "अल-माऊन",
+    "ayahCount": 7,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 108,
+    "nameArabic": "الكوثر",
+    "nameEnglish": "Al-Kawthar",
+    "nameHinglish": "Al-Kawthar",
+    "nameHindi": "अल-कौसर",
+    "ayahCount": 3,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 109,
+    "nameArabic": "الكافرون",
+    "nameEnglish": "Al-Kafirun",
+    "nameHinglish": "Al-Kafirun",
+    "nameHindi": "अल-काफ़िरून",
+    "ayahCount": 6,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 110,
+    "nameArabic": "النصر",
+    "nameEnglish": "An-Nasr",
+    "nameHinglish": "An-Nasr (Madad / Tauba)",
+    "nameHindi": "अन-नस्र",
+    "ayahCount": 3,
+    "revelationType": "Madani"
+  },
+  {
+    "surahNumber": 111,
+    "nameArabic": "المسد",
+    "nameEnglish": "Al-Masad",
+    "nameHinglish": "Al-Masad / Al-Lahab",
+    "nameHindi": "अल-मसद",
+    "ayahCount": 5,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 112,
+    "nameArabic": "الإخلاص",
+    "nameEnglish": "Al-Ikhlas",
+    "nameHinglish": "Al-Ikhlas (Tauheed)",
+    "nameHindi": "अल-इख़लास",
+    "ayahCount": 4,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 113,
+    "nameArabic": "الفلق",
+    "nameEnglish": "Al-Falaq",
+    "nameHinglish": "Al-Falaq (Subah / Hifazat)",
+    "nameHindi": "अल-फ़लक़",
+    "ayahCount": 5,
+    "revelationType": "Makki"
+  },
+  {
+    "surahNumber": 114,
+    "nameArabic": "الناس",
+    "nameEnglish": "An-Nas",
+    "nameHinglish": "An-Nas (Log / Hifazat)",
+    "nameHindi": "अन-नास",
+    "ayahCount": 6,
+    "revelationType": "Makki"
+  }
+]
