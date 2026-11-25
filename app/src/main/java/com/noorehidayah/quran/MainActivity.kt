@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.Settings
@@ -27,6 +28,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -40,6 +42,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,6 +52,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.noorehidayah.quran.data.model.AppLanguage
 import com.noorehidayah.quran.data.model.FiqhSchool
 import com.noorehidayah.quran.ui.i18n.AppStrings
+import com.noorehidayah.quran.ui.screens.ChatAssistantScreen
 import com.noorehidayah.quran.ui.screens.HadithAndDuasScreen
 import com.noorehidayah.quran.ui.screens.HomeSearchScreen
 import com.noorehidayah.quran.ui.screens.QuranScreen
@@ -74,6 +78,7 @@ fun NoorHidayahApp(vm: MainViewModel) {
     val uiState by vm.uiState.collectAsState()
     val strings = remember(prefs.language) { AppStrings.forLanguage(prefs.language) }
     var activeTab by remember { mutableIntStateOf(0) }
+    var showChat by remember { mutableStateOf(false) }
 
     NoorHidayahTheme(darkTheme = prefs.darkMode) {
         if (!prefs.onboardingCompleted) {
@@ -141,6 +146,13 @@ fun NoorHidayahApp(vm: MainViewModel) {
                         titleContentColor = MaterialTheme.colorScheme.onPrimary
                     ),
                     actions = {
+                        IconButton(onClick = { showChat = !showChat }) {
+                            Icon(
+                                imageVector = Icons.Default.Chat,
+                                contentDescription = "Noor Guide Chat",
+                                tint = MaterialTheme.colorScheme.onPrimary
+                            )
+                        }
                         TextButton(onClick = {
                             val entries = AppLanguage.entries
                             val next = entries[(prefs.language.ordinal + 1) % entries.size]
@@ -202,6 +214,13 @@ fun NoorHidayahApp(vm: MainViewModel) {
                         text = "Startup Error:\n${uiState.startupError}",
                         modifier = Modifier.align(Alignment.Center).padding(16.dp),
                         color = MaterialTheme.colorScheme.error
+                    )
+                } else if (showChat) {
+                    ChatAssistantScreen(
+                        repository = vm.repo,
+                        surahs = uiState.surahs,
+                        prefs = prefs,
+                        onBack = { showChat = false }
                     )
                 } else {
                     when (activeTab) {

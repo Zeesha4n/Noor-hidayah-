@@ -138,5 +138,33 @@
     "hinglish": "Tamam tareefein us Allah ke liye hain jisne humein maut (neend) ke baad dubara zinda kiya, aur usi ki taraf laut kar jana hai.",
     "hindi": "तमाम तारीफ़ें अल्लाह के लिए हैं जिसने हमें नींद के बाद फिर से जीवन दिया और उसी की ओर लौटना है।",
     "reference": "Sahih al-Bukhari 6312"
+  },
+  {
+    "id": 11,
+    "category": "Daily Duas",
+    "titleEnglish": "Dua Before Eating",
+    "titleHinglish": "Khana Khane Se Pehle ki Dua",
+    "titleHindi": "खाना खाने से पहले की दुआ",
+    "titleArabic": "دعاء قبل الطعام",
+    "arabic": "بِسْمِ اللَّهِ وَعَلَى بَرَكَةِ اللَّهِ",
+    "transliteration": "Bismillahi wa 'ala barakatillah (or Bismillah)",
+    "english": "In the name of Allah and with the blessings of Allah.",
+    "hinglish": "Allah ke naam se aur Allah ki barkat ke saath (shuru karta hoon).",
+    "hindi": "अल्लाह के नाम से और अल्लाह की बरकत के साथ।",
+    "reference": "Sunan Abi Dawud 3767 / Mustadrak al-Hakim"
+  },
+  {
+    "id": 12,
+    "category": "Daily Duas",
+    "titleEnglish": "Dua After Eating",
+    "titleHinglish": "Khana Khane Ke Baad ki Dua",
+    "titleHindi": "खाना खाने के बाद की दुआ",
+    "titleArabic": "دعاء بعد الطعام",
+    "arabic": "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ",
+    "transliteration": "Alhamdulillahil-ladhi at'amana wa saqana wa ja'alana Muslimeen",
+    "english": "All praise is due to Allah who fed us, gave us drink, and made us Muslims.",
+    "hinglish": "Tamam tareefein Allah ke liye hain jisne humein khilaya, pilaya, aur Musalman banaya.",
+    "hindi": "तमाम तारीफ़ें अल्लाह के लिए हैं जिसने हमें खिलाया, पिलाया और मुसलमान बनाया।",
+    "reference": "Sunan Abi Dawud 3850"
   }
 ]

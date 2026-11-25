@@ -46,7 +46,8 @@ data class MainUiState(
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository = QuranRepository(application)
+    val repo = QuranRepository(application)
+    private val repository get() = repo
     private val prefsManager = PreferencesManager(application)
 
     val preferences: StateFlow<UserPreferences> = prefsManager.state

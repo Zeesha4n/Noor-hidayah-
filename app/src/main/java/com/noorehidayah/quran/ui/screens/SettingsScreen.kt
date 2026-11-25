@@ -40,6 +40,7 @@ import com.noorehidayah.quran.data.model.PrayerCalcMethod
 import com.noorehidayah.quran.data.model.UserPreferences
 import com.noorehidayah.quran.ui.i18n.Strings
 import com.noorehidayah.quran.ui.viewmodel.MainUiState
+import com.noorehidayah.quran.utils.PrayerTimeCalculator
 import com.noorehidayah.quran.utils.ReminderScheduler
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -63,11 +64,15 @@ fun SettingsScreen(
         if (uri != null) onImportPack(uri)
     }
 
+    val cities = PrayerTimeCalculator.builtInCities
+    val selectedCity = cities[prefs.selectedCityIndex.coerceIn(0, cities.lastIndex)]
     val notifPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { granted ->
         onRemindersChange(granted)
-        if (granted) ReminderScheduler.scheduleDailyReminder(context, true)
+        if (granted) {
+            ReminderScheduler.schedulePrayerAlarms(context, true, selectedCity, prefs.prayerMethod, prefs.asrMethod)
+        }
     }
 
     LazyColumn(
@@ -123,13 +128,13 @@ fun SettingsScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Daily Islamic Reminders (7:00 AM)", style = MaterialTheme.typography.bodyLarge)
+                    Text("5-Time Azan Alarms (${selectedCity.name})", style = MaterialTheme.typography.bodyLarge)
                     Switch(
                         checked = prefs.remindersEnabled,
                         onCheckedChange = { enable ->
                             if (!enable) {
                                 onRemindersChange(false)
-                                ReminderScheduler.scheduleDailyReminder(context, false)
+                                ReminderScheduler.schedulePrayerAlarms(context, false, selectedCity, prefs.prayerMethod, prefs.asrMethod)
                             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
                                 ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS)
                                 != PackageManager.PERMISSION_GRANTED
@@ -137,7 +142,7 @@ fun SettingsScreen(
                                 notifPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                             } else {
                                 onRemindersChange(true)
-                                ReminderScheduler.scheduleDailyReminder(context, true)
+                                ReminderScheduler.schedulePrayerAlarms(context, true, selectedCity, prefs.prayerMethod, prefs.asrMethod)
                             }
                         }
                     )
