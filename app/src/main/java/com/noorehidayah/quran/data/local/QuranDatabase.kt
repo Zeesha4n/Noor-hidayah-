@@ -210,7 +210,7 @@ class QuranDatabase(context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
                 stmt.bindString(6, a.english)
                 stmt.bindString(7, a.hindi)
                 stmt.bindString(8, a.hinglish)
-                stmt.bindString(9, a.keywords_hinglish)
+                stmt.bindString(9, a.keywordsHinglish)
                 stmt.executeInsert()
             }
             db.execSQL("DELETE FROM ayahs_fts")
