@@ -197,32 +197,27 @@ class QuranDatabase(context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
         val db = writableDatabase
         db.beginTransaction()
         try {
+            val stmt = db.compileStatement(
+                "INSERT OR REPLACE INTO ayahs (id, surah_number, ayah_number, arabic, transliteration, english, hindi, hinglish, keywords_hinglish) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            )
             for (a in ayahs) {
-                val cv = ContentValues().apply {
-                    put("id", a.id)
-                    put("surah_number", a.surahNumber)
-                    put("ayah_number", a.ayahNumber)
-                    put("arabic", a.arabic)
-                    put("transliteration", a.transliteration)
-                    put("english", a.english)
-                    put("hindi", a.hindi)
-                    put("hinglish", a.hinglish)
-                    put("keywords_hinglish", a.keywordsHinglish)
-                }
-                db.insertWithOnConflict("ayahs", null, cv, SQLiteDatabase.CONFLICT_REPLACE)
-
-                db.delete("ayahs_fts", "ayah_id = ?", arrayOf(a.id))
-                val ftsCv = ContentValues().apply {
-                    put("ayah_id", a.id)
-                    put("surah_number", a.surahNumber.toString())
-                    put("transliteration", a.transliteration)
-                    put("english", a.english)
-                    put("hindi", a.hindi)
-                    put("hinglish", a.hinglish)
-                    put("keywords_hinglish", a.keywordsHinglish)
-                }
-                db.insert("ayahs_fts", null, ftsCv)
+                stmt.clearBindings()
+                stmt.bindString(1, a.id)
+                stmt.bindLong(2, a.surahNumber.toLong())
+                stmt.bindLong(3, a.ayahNumber.toLong())
+                stmt.bindString(4, a.arabic)
+                stmt.bindString(5, a.transliteration)
+                stmt.bindString(6, a.english)
+                stmt.bindString(7, a.hindi)
+                stmt.bindString(8, a.hinglish)
+                stmt.bindString(9, a.keywords_hinglish)
+                stmt.executeInsert()
             }
+            db.execSQL("DELETE FROM ayahs_fts")
+            db.execSQL(
+                "INSERT INTO ayahs_fts(ayah_id, surah_number, transliteration, english, hindi, hinglish, keywords_hinglish) " +
+                    "SELECT id, CAST(surah_number AS TEXT), transliteration, english, hindi, hinglish, keywords_hinglish FROM ayahs"
+            )
             db.setTransactionSuccessful()
         } finally {
             db.endTransaction()
