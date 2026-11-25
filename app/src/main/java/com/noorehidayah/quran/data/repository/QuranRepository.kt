@@ -182,6 +182,56 @@ class QuranRepository(private val context: Context) {
     /**
      * Online Boost search using AlQuran Cloud public search API when internet is connected.
      */
+
+    /**
+     * Downloads full 114-Surah Tafseer from spa5k/tafsir_api CDN for offline storage.
+     */
+    suspend fun downloadFullTafseerEdition(
+        slug: String,
+        fiqhName: String,
+        sourceLabel: String
+    ): Result<Int> = withContext(Dispatchers.IO) {
+        try {
+            var totalInserted = 0
+            for (surah in 1..114) {
+                val url = "https://cdn.jsdelivr.net/gh/spa5k/tafsir_api@v1.2.3/tafsir/$slug/$surah.json"
+                val conn = (URL(url).openConnection() as HttpURLConnection).apply {
+                    connectTimeout = 8000
+                    readTimeout = 12000
+                }
+                if (conn.responseCode != 200) continue
+                val body = conn.inputStream.bufferedReader(Charsets.UTF_8).use { it.readText() }
+                val ayahsArr = JSONObject(body).optJSONArray("ayahs") ?: continue
+                val batch = ArrayList<TafseerEntry>(ayahsArr.length())
+                for (i in 0 until ayahsArr.length()) {
+                    val o = ayahsArr.getJSONObject(i)
+                    val aNum = o.optInt("ayah", 0)
+                    val txt = o.optString("text", "").trim()
+                    if (aNum > 0 && txt.isNotEmpty()) {
+                        batch.add(
+                            TafseerEntry(
+                                ayahId = "$surah:$aNum",
+                                fiqh = fiqhName,
+                                sourceName = sourceLabel,
+                                english = txt,
+                                hinglish = txt,
+                                hindi = txt
+                            )
+                        )
+                    }
+                }
+                if (batch.isNotEmpty()) {
+                    db.insertTafseers(batch)
+                    totalInserted += batch.size
+                }
+            }
+            if (totalInserted > 0) Result.success(totalInserted)
+            else Result.failure(IllegalStateException("No tafseer downloaded (offline?)"))
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     suspend fun searchQuranOnline(query: String): List<String> = withContext(Dispatchers.IO) {
         try {
             val encoded = URLEncoder.encode(query.trim(), "UTF-8")

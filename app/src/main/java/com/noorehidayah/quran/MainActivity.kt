@@ -1,6 +1,10 @@
 package com.noorehidayah.quran
 
+import android.Manifest
+import android.os.Build
 import android.os.Bundle
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -79,6 +83,12 @@ fun NoorHidayahApp(vm: MainViewModel) {
     val strings = remember(prefs.language) { AppStrings.forLanguage(prefs.language) }
     var activeTab by remember { mutableIntStateOf(0) }
     var showChat by remember { mutableStateOf(false) }
+    val autoPermLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) {
+        vm.refreshAutomation()
+        vm.completeOnboarding()
+    }
 
     NoorHidayahTheme(darkTheme = prefs.darkMode) {
         if (!prefs.onboardingCompleted) {
@@ -126,7 +136,13 @@ fun NoorHidayahApp(vm: MainViewModel) {
                         }
                         Spacer(modifier = Modifier.height(6.dp))
                         Button(
-                            onClick = vm::completeOnboarding,
+                            onClick = {
+                                val perms = mutableListOf(Manifest.permission.ACCESS_COARSE_LOCATION)
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                    perms.add(Manifest.permission.POST_NOTIFICATIONS)
+                                }
+                                autoPermLauncher.launch(perms.toTypedArray())
+                            },
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Text("Shuru Karein", fontWeight = FontWeight.Bold)
@@ -276,6 +292,8 @@ fun NoorHidayahApp(vm: MainViewModel) {
                             onDarkModeChange = vm::setDarkMode,
                             onPrayerMethodChange = vm::setPrayerMethod,
                             onRemindersChange = vm::setRemindersEnabled,
+                            onAutoLocationChange = vm::setAutoLocation,
+                            onAutoSyncChange = vm::setAutoSync,
                             onImportPack = vm::importPack
                         )
                     }

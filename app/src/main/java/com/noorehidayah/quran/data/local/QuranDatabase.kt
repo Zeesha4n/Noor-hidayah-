@@ -265,16 +265,18 @@ class QuranDatabase(context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
         val db = writableDatabase
         db.beginTransaction()
         try {
+            val stmt = db.compileStatement(
+                "INSERT OR REPLACE INTO tafseer (ayah_id, fiqh, source_name, english, hinglish, hindi) VALUES (?, ?, ?, ?, ?, ?)"
+            )
             for (t in entries) {
-                val cv = ContentValues().apply {
-                    put("ayah_id", t.ayahId)
-                    put("fiqh", t.fiqh)
-                    put("source_name", t.sourceName)
-                    put("english", t.english)
-                    put("hinglish", t.hinglish)
-                    put("hindi", t.hindi)
-                }
-                db.insertWithOnConflict("tafseer", null, cv, SQLiteDatabase.CONFLICT_REPLACE)
+                stmt.clearBindings()
+                stmt.bindString(1, t.ayahId)
+                stmt.bindString(2, t.fiqh)
+                stmt.bindString(3, t.sourceName)
+                stmt.bindString(4, t.english)
+                stmt.bindString(5, t.hinglish)
+                stmt.bindString(6, t.hindi)
+                stmt.executeInsert()
             }
             db.setTransactionSuccessful()
         } finally {

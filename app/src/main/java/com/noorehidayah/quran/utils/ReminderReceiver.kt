@@ -14,6 +14,7 @@ import androidx.core.app.NotificationCompat
 import com.noorehidayah.quran.data.model.AsrMethod
 import com.noorehidayah.quran.data.model.CityLocation
 import com.noorehidayah.quran.data.model.PrayerCalcMethod
+import com.noorehidayah.quran.data.prefs.PreferencesManager
 import java.util.Calendar
 
 class ReminderReceiver : BroadcastReceiver() {
@@ -130,6 +131,18 @@ object ReminderScheduler {
             set(Calendar.SECOND, 0)
             if (timeInMillis <= System.currentTimeMillis()) {
                 add(Calendar.DAY_OF_YEAR, 1)
+            }
+        }
+    }
+}
+
+class BootReceiver : BroadcastReceiver() {
+    override fun onReceive(context: Context, intent: Intent) {
+        if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
+            val prefs = PreferencesManager(context).state.value
+            if (prefs.remindersEnabled) {
+                val city = PrayerTimeCalculator.resolveActiveCity(prefs)
+                ReminderScheduler.schedulePrayerAlarms(context, true, city, prefs.prayerMethod, prefs.asrMethod)
             }
         }
     }

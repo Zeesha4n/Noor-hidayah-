@@ -63,7 +63,7 @@ fun HomeSearchScreen(
 ) {
     val context = LocalContext.current
     val cities = PrayerTimeCalculator.builtInCities
-    val city = cities[prefs.selectedCityIndex.coerceIn(0, cities.lastIndex)]
+    val city = PrayerTimeCalculator.resolveActiveCity(prefs)
     val prayerTimes = remember(city, prefs.prayerMethod, prefs.asrMethod) {
         PrayerTimeCalculator.calculate(city, prefs.prayerMethod, prefs.asrMethod)
     }

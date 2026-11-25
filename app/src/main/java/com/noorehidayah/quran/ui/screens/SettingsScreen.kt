@@ -55,6 +55,8 @@ fun SettingsScreen(
     onDarkModeChange: (Boolean) -> Unit,
     onPrayerMethodChange: (PrayerCalcMethod) -> Unit,
     onRemindersChange: (Boolean) -> Unit,
+    onAutoLocationChange: (Boolean) -> Unit,
+    onAutoSyncChange: (Boolean) -> Unit,
     onImportPack: (Uri) -> Unit
 ) {
     val context = LocalContext.current
@@ -64,8 +66,7 @@ fun SettingsScreen(
         if (uri != null) onImportPack(uri)
     }
 
-    val cities = PrayerTimeCalculator.builtInCities
-    val selectedCity = cities[prefs.selectedCityIndex.coerceIn(0, cities.lastIndex)]
+    val selectedCity = PrayerTimeCalculator.resolveActiveCity(prefs)
     val notifPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { granted ->
@@ -122,6 +123,29 @@ fun SettingsScreen(
                 ) {
                     Text(strings.darkMode, style = MaterialTheme.typography.bodyLarge)
                     Switch(checked = prefs.darkMode, onCheckedChange = onDarkModeChange)
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text("Auto GPS City (${selectedCity.name})", style = MaterialTheme.typography.bodyLarge)
+                    Switch(checked = prefs.autoLocationEnabled, onCheckedChange = onAutoLocationChange)
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text("Auto Background Tafseer & Hadith Sync", style = MaterialTheme.typography.bodyMedium)
+                    Switch(checked = prefs.autoSyncEnabled, onCheckedChange = onAutoSyncChange)
+                }
+                if (!uiState.autoSyncStatus.isNullOrBlank()) {
+                    Text(
+                        text = uiState.autoSyncStatus,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.primary
+                    )
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth(),

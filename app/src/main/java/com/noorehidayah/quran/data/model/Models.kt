@@ -207,5 +207,13 @@ data class UserPreferences(
     val selectedCityIndex: Int = 0,
     val prayerMethod: PrayerCalcMethod = PrayerCalcMethod.KARACHI,
     val asrMethod: AsrMethod = AsrMethod.HANAFI,
-    val remindersEnabled: Boolean = false
+    val remindersEnabled: Boolean = true,
+    val autoSyncEnabled: Boolean = true,
+    val autoTafseerSynced: Boolean = false,
+    val autoHadithSynced: Boolean = false,
+    val autoLocationEnabled: Boolean = true,
+    val autoCityName: String? = null,
+    val autoLat: Double? = null,
+    val autoLon: Double? = null,
+    val autoTz: Double? = null
 )

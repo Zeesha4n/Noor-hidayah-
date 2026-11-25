@@ -45,7 +45,15 @@ class PreferencesManager(context: Context) {
             selectedCityIndex = prefs.getInt("city_index", 0),
             prayerMethod = PrayerCalcMethod.entries[methodOrdinal],
             asrMethod = AsrMethod.entries[asrOrdinal],
-            remindersEnabled = prefs.getBoolean("reminders_enabled", false)
+            remindersEnabled = prefs.getBoolean("reminders_enabled", true),
+            autoSyncEnabled = prefs.getBoolean("auto_sync", true),
+            autoTafseerSynced = prefs.getBoolean("auto_tafseer_synced", false),
+            autoHadithSynced = prefs.getBoolean("auto_hadith_synced", false),
+            autoLocationEnabled = prefs.getBoolean("auto_location", true),
+            autoCityName = prefs.getString("auto_city_name", null),
+            autoLat = if (prefs.contains("auto_lat")) prefs.getFloat("auto_lat", 0f).toDouble() else null,
+            autoLon = if (prefs.contains("auto_lon")) prefs.getFloat("auto_lon", 0f).toDouble() else null,
+            autoTz = if (prefs.contains("auto_tz")) prefs.getFloat("auto_tz", 5.5f).toDouble() else null
         )
     }
 
@@ -74,6 +82,18 @@ class PreferencesManager(context: Context) {
             .putInt("prayer_method", next.prayerMethod.ordinal)
             .putInt("asr_method", next.asrMethod.ordinal)
             .putBoolean("reminders_enabled", next.remindersEnabled)
+            .putBoolean("auto_sync", next.autoSyncEnabled)
+            .putBoolean("auto_tafseer_synced", next.autoTafseerSynced)
+            .putBoolean("auto_hadith_synced", next.autoHadithSynced)
+            .putBoolean("auto_location", next.autoLocationEnabled)
+            .putString("auto_city_name", next.autoCityName)
+            .apply {
+                if (next.autoLat != null && next.autoLon != null && next.autoTz != null) {
+                    putFloat("auto_lat", next.autoLat.toFloat())
+                    putFloat("auto_lon", next.autoLon.toFloat())
+                    putFloat("auto_tz", next.autoTz.toFloat())
+                }
+            }
             .apply()
     }
 }

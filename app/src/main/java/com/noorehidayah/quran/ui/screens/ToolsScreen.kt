@@ -109,7 +109,7 @@ fun ToolsScreen(
 private fun HijriCalendarPanel(prefs: UserPreferences) {
     val hijriToday = remember { HijriCalendarHelper.todayHijri() }
     val cities = PrayerTimeCalculator.builtInCities
-    val city = cities[prefs.selectedCityIndex.coerceIn(0, cities.lastIndex)]
+    val city = PrayerTimeCalculator.resolveActiveCity(prefs)
     val times = remember(city, prefs.prayerMethod, prefs.asrMethod) {
         PrayerTimeCalculator.calculate(city, prefs.prayerMethod, prefs.asrMethod)
     }
@@ -177,7 +177,7 @@ private fun HijriCalendarPanel(prefs: UserPreferences) {
 private fun QiblaCompassPanel(prefs: UserPreferences) {
     val context = LocalContext.current
     val cities = PrayerTimeCalculator.builtInCities
-    val city = cities[prefs.selectedCityIndex.coerceIn(0, cities.lastIndex)]
+    val city = PrayerTimeCalculator.resolveActiveCity(prefs)
     val qiblaBearing = remember(city) { QiblaCalculator.qiblaBearingDegrees(city.latitude, city.longitude) }
     val distanceKm = remember(city) { QiblaCalculator.distanceToMakkahKm(city.latitude, city.longitude) }
     val cardinal = remember(qiblaBearing) { QiblaCalculator.cardinalDirection(qiblaBearing) }
@@ -328,7 +328,7 @@ private fun PrayerTimesPanel(
     onSelectAsrMethod: (AsrMethod) -> Unit
 ) {
     val cities = PrayerTimeCalculator.builtInCities
-    val city = cities[prefs.selectedCityIndex.coerceIn(0, cities.lastIndex)]
+    val city = PrayerTimeCalculator.resolveActiveCity(prefs)
     val times = remember(city, prefs.prayerMethod, prefs.asrMethod) {
         PrayerTimeCalculator.calculate(city, prefs.prayerMethod, prefs.asrMethod)
     }

@@ -20,6 +20,9 @@ import com.noorehidayah.quran.data.model.UnifiedSearchResults
 import com.noorehidayah.quran.data.model.UserPreferences
 import com.noorehidayah.quran.data.prefs.PreferencesManager
 import com.noorehidayah.quran.data.repository.QuranRepository
+import com.noorehidayah.quran.utils.LocationHelper
+import com.noorehidayah.quran.utils.PrayerTimeCalculator
+import com.noorehidayah.quran.utils.ReminderScheduler
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,6 +48,7 @@ data class MainUiState(
     val importStatusMessage: String? = null,
     val isDownloadingHadith: Boolean = false,
     val hadithDownloadStatus: String? = null,
+    val autoSyncStatus: String? = null,
     val startupError: String? = null
 )
 
@@ -66,6 +70,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             try {
                 repository.initializeOfflineData()
                 refreshData()
+                refreshAutomation()
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     isReady = true,
@@ -194,6 +199,70 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             if (!updated.add(key)) updated.remove(key)
             current.copy(bookmarkedDuas = updated)
         }
+    }
+
+
+    fun refreshAutomation() {
+        val ctx = getApplication<Application>()
+        if (preferences.value.autoLocationEnabled) {
+            LocationHelper.detectLastKnownCity(ctx)?.let { loc ->
+                prefsManager.update {
+                    it.copy(
+                        autoCityName = loc.name,
+                        autoLat = loc.latitude,
+                        autoLon = loc.longitude,
+                        autoTz = loc.timezoneOffsetHours
+                    )
+                }
+            }
+        }
+        val activeCity = PrayerTimeCalculator.resolveActiveCity(preferences.value)
+        ReminderScheduler.schedulePrayerAlarms(
+            ctx,
+            preferences.value.remindersEnabled,
+            activeCity,
+            preferences.value.prayerMethod,
+            preferences.value.asrMethod
+        )
+        if (preferences.value.autoSyncEnabled &&
+            (!preferences.value.autoHadithSynced || !preferences.value.autoTafseerSynced)
+        ) {
+            startAutoBackgroundSync()
+        }
+    }
+
+    private fun startAutoBackgroundSync() {
+        viewModelScope.launch {
+            if (!preferences.value.autoHadithSynced) {
+                _uiState.value = _uiState.value.copy(autoSyncStatus = "Auto-syncing Sahih Bukhari...")
+                val hRes = repository.downloadHadithCollection("eng-bukhari", "Sahih al-Bukhari", 10000)
+                if (hRes.isSuccess) {
+                    prefsManager.update { it.copy(autoHadithSynced = true) }
+                    refreshData()
+                }
+            }
+            if (!preferences.value.autoTafseerSynced) {
+                _uiState.value = _uiState.value.copy(autoSyncStatus = "Auto-syncing Full Tafseer...")
+                val t1 = repository.downloadFullTafseerEdition("en-tafsir-maarif-ul-quran", "Hanafi", "Ma'ariful Quran")
+                val t2 = repository.downloadFullTafseerEdition("en-al-jalalayn", "Shafi'i", "Tafsir al-Jalalayn")
+                val t3 = repository.downloadFullTafseerEdition("en-tafisr-ibn-kathir", "Hanbali", "Tafsir Ibn Kathir")
+                if (t1.isSuccess || t2.isSuccess || t3.isSuccess) {
+                    prefsManager.update { it.copy(autoTafseerSynced = true) }
+                    refreshData()
+                }
+            }
+            _uiState.value = _uiState.value.copy(autoSyncStatus = null)
+        }
+    }
+
+    fun setAutoLocation(enabled: Boolean) {
+        prefsManager.update { it.copy(autoLocationEnabled = enabled) }
+        refreshAutomation()
+    }
+
+    fun setAutoSync(enabled: Boolean) {
+        prefsManager.update { it.copy(autoSyncEnabled = enabled) }
+        if (enabled) startAutoBackgroundSync()
     }
 
     fun completeOnboarding() = prefsManager.update { it.copy(onboardingCompleted = true) }

@@ -183,9 +183,19 @@ private suspend fun buildHybridReply(
     surahs: List<Surah>,
     prefs: UserPreferences
 ): String {
-    val q = query.lowercase()
+    val q = query.lowercase().trim()
+
+    if (q.contains("salam") || q == "hi" || q == "hello" || q == "hey") {
+        return "Wa Alaikum Assalam wa Rahmatullahi wa Barakatuh! Bataiye main aapki kya madad kar sakta hoon? Aap Quran, Hadith, Masail, Khwab, Duas, Namaz Waqt ya Qibla ke bare mein pooch sakte hain."
+    }
+    if (q.contains("jazak") || q.contains("shukriya") || q.contains("thank")) {
+        return "Wa iyyakum / JazakAllahu Khayran! Allah aapke ilm aur amal mein barkat ata farmaye."
+    }
+    if (q.contains("kaise ho") || q.contains("how are you")) {
+        return "Alhamdulillah, bilkul theek! Bataiye aaj kis Islamic topic par madad chahiye?"
+    }
     val cities = PrayerTimeCalculator.builtInCities
-    val city = cities[prefs.selectedCityIndex.coerceIn(0, cities.lastIndex)]
+    val city = PrayerTimeCalculator.resolveActiveCity(prefs)
 
     if (q.contains("namaz") && (q.contains("waqt") || q.contains("time")) || q.contains("azan") || q.contains("sehri") || q.contains("iftar")) {
         val t = PrayerTimeCalculator.calculate(city, prefs.prayerMethod, prefs.asrMethod)

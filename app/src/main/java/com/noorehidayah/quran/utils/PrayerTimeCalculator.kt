@@ -3,6 +3,7 @@ package com.noorehidayah.quran.utils
 import com.noorehidayah.quran.data.model.AsrMethod
 import com.noorehidayah.quran.data.model.CityLocation
 import com.noorehidayah.quran.data.model.PrayerCalcMethod
+import com.noorehidayah.quran.data.model.UserPreferences
 import java.util.Calendar
 import kotlin.math.PI
 import kotlin.math.abs
@@ -46,6 +47,13 @@ object PrayerTimeCalculator {
         CityLocation("Dubai", 25.2048, 55.2708, 4.0),
         CityLocation("London", 51.5074, -0.1278, 0.0)
     )
+
+    fun resolveActiveCity(prefs: UserPreferences): CityLocation {
+        if (prefs.autoLocationEnabled && prefs.autoCityName != null && prefs.autoLat != null && prefs.autoLon != null && prefs.autoTz != null) {
+            return CityLocation(prefs.autoCityName, prefs.autoLat, prefs.autoLon, prefs.autoTz)
+        }
+        return builtInCities[prefs.selectedCityIndex.coerceIn(0, builtInCities.lastIndex)]
+    }
 
     fun calculate(
         city: CityLocation,
