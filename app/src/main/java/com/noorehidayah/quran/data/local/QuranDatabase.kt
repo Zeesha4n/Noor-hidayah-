@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import com.noorehidayah.quran.data.model.Ayah
 import com.noorehidayah.quran.data.model.DuaItem
 import com.noorehidayah.quran.data.model.HadithItem
+import com.noorehidayah.quran.data.model.MaslaItem
 import com.noorehidayah.quran.data.model.Surah
 import com.noorehidayah.quran.data.model.TafseerEntry
 import com.noorehidayah.quran.data.search.HinglishSearchEngine
@@ -15,7 +16,7 @@ class QuranDatabase(context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
 
     companion object {
         private const val DB_NAME = "noor_hidayah_offline.db"
-        private const val DB_VERSION = 3
+        private const val DB_VERSION = 4
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -133,6 +134,39 @@ class QuranDatabase(context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
             """.trimIndent()
         )
 
+
+        db.execSQL(
+            """
+            CREATE TABLE masail (
+                id INTEGER PRIMARY KEY,
+                topic TEXT NOT NULL,
+                question_hinglish TEXT NOT NULL,
+                question_english TEXT NOT NULL,
+                question_hindi TEXT NOT NULL,
+                hanafi TEXT NOT NULL,
+                shafii TEXT NOT NULL,
+                maliki TEXT NOT NULL,
+                hanbali TEXT NOT NULL,
+                jafari TEXT NOT NULL,
+                ahle_hadith TEXT NOT NULL,
+                hadith_reference TEXT NOT NULL,
+                keywords_hinglish TEXT NOT NULL
+            )
+            """.trimIndent()
+        )
+        db.execSQL(
+            """
+            CREATE VIRTUAL TABLE masail_fts USING fts4(
+                masla_id,
+                topic,
+                question_hinglish,
+                question_english,
+                question_hindi,
+                keywords_hinglish
+            )
+            """.trimIndent()
+        )
+
         db.execSQL(
             """
             CREATE VIRTUAL TABLE hadiths_fts USING fts4(
@@ -157,6 +191,8 @@ class QuranDatabase(context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
         db.execSQL("DROP TABLE IF EXISTS duas_fts")
         db.execSQL("DROP TABLE IF EXISTS hadiths")
         db.execSQL("DROP TABLE IF EXISTS hadiths_fts")
+        db.execSQL("DROP TABLE IF EXISTS masail")
+        db.execSQL("DROP TABLE IF EXISTS masail_fts")
         onCreate(db)
     }
 
@@ -290,35 +326,30 @@ class QuranDatabase(context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
         val db = writableDatabase
         db.beginTransaction()
         try {
+            val stmt = db.compileStatement(
+                "INSERT OR REPLACE INTO hadiths (id, collection, book_number, hadith_number, grading, topic, arabic, transliteration, english, hinglish, hindi, keywords_hinglish) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            )
             for (h in hadiths) {
-                val cv = ContentValues().apply {
-                    put("id", h.id)
-                    put("collection", h.collection)
-                    put("book_number", h.bookNumber)
-                    put("hadith_number", h.hadithNumber)
-                    put("grading", h.grading)
-                    put("topic", h.topic)
-                    put("arabic", h.arabic)
-                    put("transliteration", h.transliteration)
-                    put("english", h.english)
-                    put("hinglish", h.hinglish)
-                    put("hindi", h.hindi)
-                    put("keywords_hinglish", h.keywordsHinglish)
-                }
-                db.insertWithOnConflict("hadiths", null, cv, SQLiteDatabase.CONFLICT_REPLACE)
-
-                db.delete("hadiths_fts", "hadith_id = ?", arrayOf(h.id.toString()))
-                val ftsCv = ContentValues().apply {
-                    put("hadith_id", h.id.toString())
-                    put("collection", h.collection)
-                    put("topic", h.topic)
-                    put("english", h.english)
-                    put("hinglish", h.hinglish)
-                    put("hindi", h.hindi)
-                    put("keywords_hinglish", h.keywordsHinglish)
-                }
-                db.insert("hadiths_fts", null, ftsCv)
+                stmt.clearBindings()
+                stmt.bindLong(1, h.id.toLong())
+                stmt.bindString(2, h.collection)
+                stmt.bindString(3, h.bookNumber)
+                stmt.bindString(4, h.hadithNumber)
+                stmt.bindString(5, h.grading)
+                stmt.bindString(6, h.topic)
+                stmt.bindString(7, h.arabic)
+                stmt.bindString(8, h.transliteration)
+                stmt.bindString(9, h.english)
+                stmt.bindString(10, h.hinglish)
+                stmt.bindString(11, h.hindi)
+                stmt.bindString(12, h.keywordsHinglish)
+                stmt.executeInsert()
             }
+            db.execSQL("DELETE FROM hadiths_fts")
+            db.execSQL(
+                "INSERT INTO hadiths_fts(hadith_id, collection, topic, english, hinglish, hindi, keywords_hinglish) " +
+                    "SELECT CAST(id AS TEXT), collection, topic, english, hinglish, hindi, keywords_hinglish FROM hadiths"
+            )
             db.setTransactionSuccessful()
         } finally {
             db.endTransaction()
@@ -587,6 +618,92 @@ class QuranDatabase(context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
             }
         }
         return list
+    }
+
+
+    fun insertMasail(items: List<MaslaItem>) {
+        val db = writableDatabase
+        db.beginTransaction()
+        try {
+            val stmt = db.compileStatement(
+                "INSERT OR REPLACE INTO masail (id, topic, question_hinglish, question_english, question_hindi, hanafi, shafii, maliki, hanbali, jafari, ahle_hadith, hadith_reference, keywords_hinglish) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            )
+            for (m in items) {
+                stmt.clearBindings()
+                stmt.bindLong(1, m.id.toLong())
+                stmt.bindString(2, m.topic)
+                stmt.bindString(3, m.questionHinglish)
+                stmt.bindString(4, m.questionEnglish)
+                stmt.bindString(5, m.questionHindi)
+                stmt.bindString(6, m.hanafi)
+                stmt.bindString(7, m.shafii)
+                stmt.bindString(8, m.maliki)
+                stmt.bindString(9, m.hanbali)
+                stmt.bindString(10, m.jafari)
+                stmt.bindString(11, m.ahleHadith)
+                stmt.bindString(12, m.hadithReference)
+                stmt.bindString(13, m.keywordsHinglish)
+                stmt.executeInsert()
+            }
+            db.execSQL("DELETE FROM masail_fts")
+            db.execSQL(
+                "INSERT INTO masail_fts(masla_id, topic, question_hinglish, question_english, question_hindi, keywords_hinglish) " +
+                    "SELECT CAST(id AS TEXT), topic, question_hinglish, question_english, question_hindi, keywords_hinglish FROM masail"
+            )
+            db.setTransactionSuccessful()
+        } finally {
+            db.endTransaction()
+        }
+    }
+
+    fun getAllMasail(): List<MaslaItem> {
+        val list = mutableListOf<MaslaItem>()
+        readableDatabase.rawQuery(
+            "SELECT id, topic, question_hinglish, question_english, question_hindi, hanafi, shafii, maliki, hanbali, jafari, ahle_hadith, hadith_reference, keywords_hinglish FROM masail ORDER BY id ASC",
+            null
+        ).use { c ->
+            while (c.moveToNext()) {
+                list.add(
+                    MaslaItem(
+                        id = c.getInt(0), topic = c.getString(1),
+                        questionHinglish = c.getString(2), questionEnglish = c.getString(3),
+                        questionHindi = c.getString(4), hanafi = c.getString(5),
+                        shafii = c.getString(6), maliki = c.getString(7),
+                        hanbali = c.getString(8), jafari = c.getString(9),
+                        ahleHadith = c.getString(10), hadithReference = c.getString(11),
+                        keywordsHinglish = c.getString(12)
+                    )
+                )
+            }
+        }
+        return list
+    }
+
+    fun searchMasailOffline(rawQuery: String): List<MaslaItem> {
+        val trimmed = rawQuery.trim()
+        if (trimmed.isEmpty()) return emptyList()
+        val tokens = HinglishSearchEngine.expandQueryTokens(trimmed)
+        val matchedIds = linkedSetOf<Int>()
+        val ftsMatch = HinglishSearchEngine.buildFtsMatchQuery(tokens)
+        if (ftsMatch.isNotEmpty()) {
+            try {
+                readableDatabase.rawQuery("SELECT masla_id FROM masail_fts WHERE masail_fts MATCH ? LIMIT 15", arrayOf(ftsMatch)).use { c ->
+                    while (c.moveToNext()) c.getString(0).toIntOrNull()?.let { matchedIds.add(it) }
+                }
+            } catch (_: Exception) {}
+        }
+        if (matchedIds.isEmpty()) {
+            val pat = "%$trimmed%"
+            readableDatabase.rawQuery(
+                "SELECT id FROM masail WHERE topic LIKE ? OR question_hinglish LIKE ? OR question_english LIKE ? OR keywords_hinglish LIKE ? LIMIT 15",
+                arrayOf(pat, pat, pat, pat)
+            ).use { c ->
+                while (c.moveToNext()) matchedIds.add(c.getInt(0))
+            }
+        }
+        if (matchedIds.isEmpty()) return emptyList()
+        val all = getAllMasail().associateBy { it.id }
+        return matchedIds.mapNotNull { all[it] }
     }
 
     fun getTotalLoadedAyahs(): Int {

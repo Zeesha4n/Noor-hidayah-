@@ -6,6 +6,7 @@ import com.noorehidayah.quran.data.local.QuranDatabase
 import com.noorehidayah.quran.data.model.Ayah
 import com.noorehidayah.quran.data.model.DuaItem
 import com.noorehidayah.quran.data.model.HadithItem
+import com.noorehidayah.quran.data.model.MaslaItem
 import com.noorehidayah.quran.data.model.SearchCategory
 import com.noorehidayah.quran.data.model.SearchResult
 import com.noorehidayah.quran.data.model.Surah
@@ -15,6 +16,10 @@ import com.noorehidayah.quran.data.search.HinglishSearchEngine
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
+import org.json.JSONObject
+import java.net.HttpURLConnection
+import java.net.URL
+import java.net.URLEncoder
 
 class QuranRepository(private val context: Context) {
 
@@ -32,6 +37,7 @@ class QuranRepository(private val context: Context) {
         db.insertTafseers(parseTafseer(readAssetText("data/tafseer.json")))
         db.insertDuas(parseDuas(readAssetText("data/duas.json")))
         db.insertHadiths(parseHadiths(readAssetText("data/hadiths.json")))
+        db.insertMasail(parseMasail(readAssetText("data/masail.json")))
     }
 
     private fun readAssetText(path: String): String {
@@ -74,10 +80,15 @@ class QuranRepository(private val context: Context) {
             db.searchDuasOffline(query)
         } else emptyList()
 
+        val masailResults = if (category == SearchCategory.ALL) {
+            db.searchMasailOffline(query)
+        } else emptyList()
+
         UnifiedSearchResults(
             ayahs = ayahResults,
             hadiths = hadithResults,
             duas = duaResults,
+            masail = masailResults,
             detectedIntent = intentHint
         )
     }
@@ -94,16 +105,110 @@ class QuranRepository(private val context: Context) {
             }
         }
 
-    suspend fun getAllDuas(): List<DuaItem> = withContext(Dispatchers.IO) {
-        db.getAllDuas()
-    }
-
-    suspend fun getAllHadiths(): List<HadithItem> = withContext(Dispatchers.IO) {
-        db.getAllHadiths()
-    }
+    suspend fun getAllDuas(): List<DuaItem> = withContext(Dispatchers.IO) { db.getAllDuas() }
+    suspend fun getAllHadiths(): List<HadithItem> = withContext(Dispatchers.IO) { db.getAllHadiths() }
+    suspend fun getAllMasail(): List<MaslaItem> = withContext(Dispatchers.IO) { db.getAllMasail() }
 
     suspend fun getStats(): Triple<Int, Int, Int> = withContext(Dispatchers.IO) {
         Triple(db.getTotalLoadedAyahs(), db.getTotalLoadedTafseers(), db.getTotalLoadedHadiths())
+    }
+
+    /**
+     * Downloads a full authentic Hadith collection from fawazahmed0/hadith-api CDN
+     * and stores it in SQLite + FTS4 for 100% offline search afterwards.
+     */
+    suspend fun downloadHadithCollection(
+        editionId: String,
+        collectionName: String,
+        idOffset: Int
+    ): Result<String> = withContext(Dispatchers.IO) {
+        try {
+            val url = "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/$editionId.min.json"
+            val conn = (URL(url).openConnection() as HttpURLConnection).apply {
+                connectTimeout = 15000
+                readTimeout = 30000
+            }
+            if (conn.responseCode != 200) {
+                return@withContext Result.failure(IllegalStateException("HTTP ${conn.responseCode}"))
+            }
+            val body = conn.inputStream.bufferedReader(Charsets.UTF_8).use { it.readText() }
+            val rootObj = JSONObject(body)
+            val arr = rootObj.getJSONArray("hadiths")
+            val list = ArrayList<HadithItem>(arr.length())
+
+            for (i in 0 until arr.length()) {
+                val o = arr.getJSONObject(i)
+                val hNum = o.optString("hadithnumber", (i + 1).toString())
+                val text = o.optString("text", "").trim()
+                if (text.isEmpty()) continue
+
+                var gradeText = if (collectionName.contains("Sahih", ignoreCase = true)) {
+                    "Sahih (Authentic)"
+                } else {
+                    "Verified Collection"
+                }
+                val gradesArr = o.optJSONArray("grades")
+                if (gradesArr != null && gradesArr.length() > 0) {
+                    val g0 = gradesArr.optJSONObject(0)
+                    val gStr = g0?.optString("grade", "") ?: ""
+                    if (gStr.isNotBlank()) gradeText = gStr
+                }
+
+                list.add(
+                    HadithItem(
+                        id = idOffset + i,
+                        collection = collectionName,
+                        bookNumber = "Book ${o.optJSONObject("reference")?.optInt("book", 1) ?: 1}",
+                        hadithNumber = hNum,
+                        grading = gradeText,
+                        topic = collectionName,
+                        arabic = "",
+                        transliteration = "",
+                        english = text,
+                        hinglish = text,
+                        hindi = text,
+                        keywordsHinglish = collectionName.lowercase()
+                    )
+                )
+            }
+
+            db.insertHadiths(list)
+            Result.success("Downloaded ${list.size} Hadiths from $collectionName for offline use!")
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    /**
+     * Online Boost search using AlQuran Cloud public search API when internet is connected.
+     */
+    suspend fun searchQuranOnline(query: String): List<String> = withContext(Dispatchers.IO) {
+        try {
+            val encoded = URLEncoder.encode(query.trim(), "UTF-8")
+            val url = "https://api.alquran.cloud/v1/search/$encoded/all/en.sahih"
+            val conn = (URL(url).openConnection() as HttpURLConnection).apply {
+                connectTimeout = 7000
+                readTimeout = 10000
+            }
+            if (conn.responseCode != 200) return@withContext emptyList()
+            val body = conn.inputStream.bufferedReader(Charsets.UTF_8).use { it.readText() }
+            val matches = JSONObject(body).optJSONObject("data")?.optJSONArray("matches")
+                ?: return@withContext emptyList()
+            val out = mutableListOf<String>()
+            val limit = minOf(matches.length(), 3)
+            for (i in 0 until limit) {
+                val m = matches.getJSONObject(i)
+                val surahObj = m.optJSONObject("surah")
+                val sName = surahObj?.optString("englishName", "") ?: ""
+                val sNum = surahObj?.optInt("number", 0) ?: 0
+                val aNum = m.optInt("numberInSurah", 0)
+                val txt = m.optString("text", "")
+                out.add("• $sName ($sNum:$aNum): $txt")
+            }
+            out
+        } catch (_: Exception) {
+            emptyList()
+        }
     }
 
     suspend fun importOfflineJsonPack(uri: Uri): Result<String> = withContext(Dispatchers.IO) {
@@ -150,12 +255,12 @@ class QuranRepository(private val context: Context) {
             val o = arr.getJSONObject(i)
             Surah(
                 surahNumber = o.getInt("surahNumber"),
-                nameArabic = o.getString("nameArabic"),
-                nameEnglish = o.getString("nameEnglish"),
-                nameHinglish = o.getString("nameHinglish"),
-                nameHindi = o.getString("nameHindi"),
+                nameArabic = o.optString("nameArabic", ""),
+                nameEnglish = o.optString("nameEnglish", ""),
+                nameHinglish = o.optString("nameHinglish", ""),
+                nameHindi = o.optString("nameHindi", ""),
                 ayahCount = o.getInt("ayahCount"),
-                revelationType = o.getString("revelationType")
+                revelationType = o.optString("revelationType", "")
             )
         }
     }
@@ -184,7 +289,7 @@ class QuranRepository(private val context: Context) {
             val o = arr.getJSONObject(i)
             TafseerEntry(
                 ayahId = o.getString("ayahId"),
-                fiqh = o.getString("fiqh"),
+                fiqh = o.optString("fiqh", ""),
                 sourceName = o.optString("sourceName", "Classical Tafseer"),
                 english = o.optString("english", ""),
                 hinglish = o.optString("hinglish", ""),
@@ -220,7 +325,7 @@ class QuranRepository(private val context: Context) {
             val o = arr.getJSONObject(i)
             HadithItem(
                 id = o.getInt("id"),
-                collection = o.getString("collection"),
+                collection = o.optString("collection", ""),
                 bookNumber = o.optString("bookNumber", ""),
                 hadithNumber = o.optString("hadithNumber", ""),
                 grading = o.optString("grading", "Sahih"),
@@ -230,6 +335,28 @@ class QuranRepository(private val context: Context) {
                 english = o.optString("english", ""),
                 hinglish = o.optString("hinglish", ""),
                 hindi = o.optString("hindi", ""),
+                keywordsHinglish = o.optString("keywordsHinglish", "")
+            )
+        }
+    }
+
+    private fun parseMasail(json: String): List<MaslaItem> {
+        val arr = JSONArray(json)
+        return List(arr.length()) { i ->
+            val o = arr.getJSONObject(i)
+            MaslaItem(
+                id = o.getInt("id"),
+                topic = o.optString("topic", ""),
+                questionHinglish = o.optString("questionHinglish", ""),
+                questionEnglish = o.optString("questionEnglish", ""),
+                questionHindi = o.optString("questionHindi", ""),
+                hanafi = o.optString("hanafi", ""),
+                shafii = o.optString("shafii", ""),
+                maliki = o.optString("maliki", ""),
+                hanbali = o.optString("hanbali", ""),
+                jafari = o.optString("jafari", ""),
+                ahleHadith = o.optString("ahleHadith", ""),
+                hadithReference = o.optString("hadithReference", ""),
                 keywordsHinglish = o.optString("keywordsHinglish", "")
             )
         }

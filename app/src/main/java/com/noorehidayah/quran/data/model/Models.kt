@@ -138,10 +138,44 @@ data class DuaItem(
     }
 }
 
+
+data class MaslaItem(
+    val id: Int,
+    val topic: String,
+    val questionHinglish: String,
+    val questionEnglish: String,
+    val questionHindi: String,
+    val hanafi: String,
+    val shafii: String,
+    val maliki: String,
+    val hanbali: String,
+    val jafari: String,
+    val ahleHadith: String,
+    val hadithReference: String,
+    val keywordsHinglish: String
+) {
+    fun questionFor(language: AppLanguage): String = when (language) {
+        AppLanguage.HINGLISH -> questionHinglish
+        AppLanguage.HINDI -> questionHindi
+        AppLanguage.ENGLISH -> questionEnglish
+        AppLanguage.ARABIC -> questionEnglish
+    }
+
+    fun rulingFor(fiqh: FiqhSchool): String = when (fiqh) {
+        FiqhSchool.HANAFI -> hanafi
+        FiqhSchool.SHAFII -> shafii
+        FiqhSchool.MALIKI -> maliki
+        FiqhSchool.HANBALI -> hanbali
+        FiqhSchool.JAFARI -> jafari
+        FiqhSchool.AHLE_HADITH -> ahleHadith
+    }
+}
+
 data class UnifiedSearchResults(
     val ayahs: List<SearchResult> = emptyList(),
     val hadiths: List<HadithItem> = emptyList(),
     val duas: List<DuaItem> = emptyList(),
+    val masail: List<MaslaItem> = emptyList(),
     val detectedIntent: String? = null
 )
 

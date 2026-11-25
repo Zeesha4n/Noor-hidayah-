@@ -38,6 +38,17 @@ object HinglishSearchEngine {
         listOf("safar", "travel", "journey", "musafir"),
         listOf("niyat", "intention", "amal", "irada"),
         listOf("qayamat", "akhirat", "insaaf", "hisab", "judgement"),
+        listOf("khwab", "sapna", "dream", "nightmare", "bura", "daravna", "neend"),
+        listOf("khana", "food", "eat", "bhojan", "khane", "peene"),
+        listOf("roza", "fast", "fasting", "ramadan", "sehri", "iftar"),
+        listOf("shadi", "nikah", "marriage", "biwi", "shohar"),
+        listOf("gheebat", "backbiting", "chugli", "burai"),
+        listOf("jhooth", "sach", "lie", "truth", "honesty"),
+        listOf("wudu", "wazu", "safai", "paaki", "cleanliness"),
+        listOf("durood", "salawat", "nabi", "jumma"),
+        listOf("sadaqah", "zakat", "charity", "khairat", "daan"),
+        listOf("bimari", "bimar", "shifa", "ilaj", "health", "sick", "cure"),
+        listOf("ameen", "amin", "rafa", "yadain", "ruku", "qasr", "masla", "masail"),
         listOf("deen", "mazhab", "religion", "islam")
     )
 
@@ -70,6 +81,8 @@ object HinglishSearchEngine {
                 "Intent: Walidain (Parents) ke Haq aur Dua"
             q.contains("safar") || q.contains("travel") ->
                 "Intent: Safar (Travel) ki Sunnah Dua"
+            q.contains("khwab") || q.contains("sapna") || q.contains("dream") ->
+                "Intent: Khwab (Dreams) par Sahih Hadith aur Fiqh Masail"
             q.contains("hifazat") || q.contains("nazar") || q.contains("dar") || q.contains("kursi") ->
                 "Intent: Hifazat & Subah-Shaam Azkar"
             else -> null

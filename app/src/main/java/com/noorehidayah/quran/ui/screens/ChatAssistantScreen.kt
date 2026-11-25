@@ -21,6 +21,7 @@ import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -53,11 +54,6 @@ data class ChatMessage(
     val text: String
 )
 
-/**
- * 100% Offline Smart Chat Assistant ("Noor Guide"):
- * Queries the local SQLite FTS4 Quran, Tafseer, Hadith, Duas, and Prayer/Qibla engines
- * with zero internet and zero hallucinated religious claims.
- */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ChatAssistantScreen(
@@ -68,23 +64,25 @@ fun ChatAssistantScreen(
 ) {
     val scope = rememberCoroutineScope()
     var inputText by remember { mutableStateOf("") }
+    var onlineBoost by remember { mutableStateOf(true) }
+
     val messages = remember {
         mutableStateListOf(
             ChatMessage(
                 id = 1L,
                 isUser = false,
-                text = "Assalamu Alaikum! Main Noor Guide hoon (100% Offline Smart Assistant).\n\nAap Hinglish, Hindi ya English mein kuch bhi pooch sakte hain—jaise:\n• \"Mujhe bahut tension ho rahi hai\"\n• \"Khana khane ki dua batao\"\n• \"Sabr par Quran ki ayat\"\n• \"Aaj namaz ka waqt kya hai?\""
+                text = "Assalamu Alaikum! Main Noor Guide hoon (Offline + Optional Online Boost).\n\nAap Hinglish, Hindi ya English mein kuch bhi pooch sakte hain—jaise:\n• \"Bura khwab dekhna kaisa hai\"\n• \"Khana khane ki dua\"\n• \"Rafa-ul-Yadain / Ameen\"\n• \"Sabr par Quran ki ayat\"\n• \"Aaj namaz ka waqt kya hai?\""
             )
         )
     }
 
     val quickPrompts = listOf(
-        "Tension / Mushkil",
+        "Bura khwab / Sapna",
         "Khana khane ki dua",
-        "Sabr par ayat",
+        "Rafa-ul-Yadain",
         "Namaz ka waqt",
-        "Qibla direction",
-        "Walidain ki dua"
+        "Sabr par ayat",
+        "Qibla direction"
     )
 
     fun sendMessage(query: String) {
@@ -94,7 +92,7 @@ fun ChatAssistantScreen(
         inputText = ""
 
         scope.launch {
-            val reply = buildOfflineReply(trimmed, repository, surahs, prefs)
+            val reply = buildHybridReply(trimmed, onlineBoost, repository, surahs, prefs)
             messages.add(ChatMessage(System.currentTimeMillis() + 1, isUser = false, text = reply))
         }
     }
@@ -102,16 +100,21 @@ fun ChatAssistantScreen(
     Column(modifier = Modifier.fillMaxSize()) {
         Surface(color = MaterialTheme.colorScheme.primaryContainer, modifier = Modifier.fillMaxWidth()) {
             Row(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 10.dp),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(onClick = onBack) {
                     Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                 }
                 Column(modifier = Modifier.weight(1f)) {
-                    Text("Noor Guide (Offline Chat)", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                    Text("FTS4 + Local Quran, Hadith & Duas • No Internet", style = MaterialTheme.typography.labelSmall)
+                    Text("Noor Guide", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                    Text("Offline Quran/Masail + Online Boost", style = MaterialTheme.typography.labelSmall)
                 }
+                FilterChip(
+                    selected = onlineBoost,
+                    onClick = { onlineBoost = !onlineBoost },
+                    label = { Text(if (onlineBoost) "Online Boost: ON" else "Offline Only", fontSize = 11.sp) }
+                )
             }
         }
 
@@ -134,7 +137,7 @@ fun ChatAssistantScreen(
                     horizontalArrangement = if (msg.isUser) Arrangement.End else Arrangement.Start
                 ) {
                     Card(
-                        modifier = Modifier.widthIn(max = 310.dp),
+                        modifier = Modifier.widthIn(max = 315.dp),
                         shape = RoundedCornerShape(16.dp),
                         colors = CardDefaults.cardColors(
                             containerColor = if (msg.isUser) MaterialTheme.colorScheme.primary
@@ -173,8 +176,9 @@ fun ChatAssistantScreen(
     }
 }
 
-private suspend fun buildOfflineReply(
+private suspend fun buildHybridReply(
     query: String,
+    onlineBoost: Boolean,
     repository: QuranRepository,
     surahs: List<Surah>,
     prefs: UserPreferences
@@ -183,7 +187,7 @@ private suspend fun buildOfflineReply(
     val cities = PrayerTimeCalculator.builtInCities
     val city = cities[prefs.selectedCityIndex.coerceIn(0, cities.lastIndex)]
 
-    if (q.contains("namaz") || q.contains("waqt") || q.contains("azan") || q.contains("prayer") || q.contains("sehri") || q.contains("iftar")) {
+    if (q.contains("namaz") && (q.contains("waqt") || q.contains("time")) || q.contains("azan") || q.contains("sehri") || q.contains("iftar")) {
         val t = PrayerTimeCalculator.calculate(city, prefs.prayerMethod, prefs.asrMethod)
         return "Aaj ${city.name} (${prefs.asrMethod.displayName}) ke Namaz Waqt:\n\n" +
             "• Fajr (Sehri): ${t.fajr}\n" +
@@ -199,40 +203,53 @@ private suspend fun buildOfflineReply(
         val deg = QiblaCalculator.qiblaBearingDegrees(city.latitude, city.longitude)
         val dir = QiblaCalculator.cardinalDirection(deg)
         val km = QiblaCalculator.distanceToMakkahKm(city.latitude, city.longitude)
-        return "${city.name} se Qibla ki disha: ${deg.toInt()}° $dir (Makkah se faasla: $km km).\n\nLive compass dekhne ke liye Tools > Qibla tab kholein."
+        return "${city.name} se Qibla ki disha: ${deg.toInt()}° $dir (Makkah se faasla: $km km)."
     }
 
     val results = repository.unifiedOfflineSearch(query, SearchCategory.ALL, surahs)
     val sb = StringBuilder()
     results.detectedIntent?.let { sb.append("$it\n\n") }
 
-    if (results.ayahs.isNotEmpty()) {
-        val top = results.ayahs.first()
-        sb.append("📖 Quran (${top.surah?.nameEnglish ?: ""} ${top.ayah.id}):\n")
-        sb.append("${top.ayah.arabic}\n")
-        sb.append("${top.ayah.translationFor(prefs.language)}\n")
-        val fiqhTafseer = top.tafseers.firstOrNull { it.fiqh.equals(prefs.defaultFiqh.key, ignoreCase = true) }
-        if (fiqhTafseer != null) {
-            sb.append("\n📚 ${fiqhTafseer.fiqh} Tafseer (${fiqhTafseer.sourceName}):\n${fiqhTafseer.textFor(prefs.language)}\n")
-        }
-    }
-
-    if (results.duas.isNotEmpty()) {
-        val d = results.duas.first()
-        if (sb.isNotEmpty()) sb.append("\n")
-        sb.append("🤲 Dua (${d.titleFor(prefs.language)}):\n")
-        sb.append("${d.arabic}\n${d.translationFor(prefs.language)}\n(${d.reference})\n")
+    if (results.masail.isNotEmpty()) {
+        val m = results.masail.first()
+        sb.append("⚖️ Masla (${m.topic} • ${prefs.defaultFiqh.displayName} Fiqh):\n")
+        sb.append("${m.rulingFor(prefs.defaultFiqh)}\n(Ref: ${m.hadithReference})\n\n")
     }
 
     if (results.hadiths.isNotEmpty()) {
         val h = results.hadiths.first()
-        if (sb.isNotEmpty()) sb.append("\n")
-        sb.append("📜 Hadith (${h.collection} #${h.hadithNumber} • ${h.grading}):\n")
-        sb.append("${h.translationFor(prefs.language)}\n")
+        sb.append("📜 [${h.grading}] ${h.collection} #${h.hadithNumber}:\n")
+        sb.append("${h.translationFor(prefs.language)}\n\n")
+    }
+
+    if (results.ayahs.isNotEmpty()) {
+        val top = results.ayahs.first()
+        sb.append("📖 Quran (${top.surah?.nameEnglish ?: ""} ${top.ayah.id}):\n")
+        sb.append("${top.ayah.arabic}\n${top.ayah.translationFor(prefs.language)}\n")
+        val fiqhTafseer = top.tafseers.firstOrNull { it.fiqh.equals(prefs.defaultFiqh.key, ignoreCase = true) }
+        if (fiqhTafseer != null) {
+            sb.append("📚 ${fiqhTafseer.fiqh} Tafseer: ${fiqhTafseer.textFor(prefs.language)}\n")
+        }
+        sb.append("\n")
+    }
+
+    if (results.duas.isNotEmpty()) {
+        val d = results.duas.first()
+        sb.append("🤲 Dua (${d.titleFor(prefs.language)}):\n")
+        sb.append("${d.arabic}\n${d.translationFor(prefs.language)}\n(${d.reference})\n")
+    }
+
+    // Online Boost fallback when internet is available and offline found nothing
+    if (sb.isEmpty() && onlineBoost) {
+        val onlineMatches = repository.searchQuranOnline(query)
+        if (onlineMatches.isNotEmpty()) {
+            sb.append("🌐 Online Verified Quran Search:\n\n")
+            onlineMatches.forEach { sb.append("$it\n\n") }
+        }
     }
 
     return if (sb.isEmpty()) {
-        "Mujhe is topic par offline database mein exact match nahi mila. Aap simple lafz try karein—jaise: sabr, mushkil, khana, maafi, walidain, rizq, ya namaz."
+        "Offline database mein exact match nahi mila. Simple lafz try karein (jaise: khwab, sapna, sabr, mushkil, khana, rafa, ameen, maafi, walidain, rizq) — ya full Hadith books download karne ke liye Hadith tab kholein."
     } else {
         sb.toString().trim()
     }

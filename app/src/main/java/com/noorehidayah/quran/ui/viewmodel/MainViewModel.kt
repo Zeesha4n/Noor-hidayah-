@@ -10,6 +10,7 @@ import com.noorehidayah.quran.data.model.Ayah
 import com.noorehidayah.quran.data.model.DuaItem
 import com.noorehidayah.quran.data.model.FiqhSchool
 import com.noorehidayah.quran.data.model.HadithItem
+import com.noorehidayah.quran.data.model.MaslaItem
 import com.noorehidayah.quran.data.model.PrayerCalcMethod
 import com.noorehidayah.quran.data.model.SearchCategory
 import com.noorehidayah.quran.data.model.SearchResult
@@ -37,10 +38,13 @@ data class MainUiState(
     val bookmarkedResults: List<SearchResult> = emptyList(),
     val duas: List<DuaItem> = emptyList(),
     val hadiths: List<HadithItem> = emptyList(),
+    val masail: List<MaslaItem> = emptyList(),
     val loadedAyahCount: Int = 0,
     val loadedTafseerCount: Int = 0,
     val loadedHadithCount: Int = 0,
     val importStatusMessage: String? = null,
+    val isDownloadingHadith: Boolean = false,
+    val hadithDownloadStatus: String? = null,
     val startupError: String? = null
 )
 
@@ -75,6 +79,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         val surahs = repository.getAllSurahs()
         val duas = repository.getAllDuas()
         val hadiths = repository.getAllHadiths()
+        val masail = repository.getAllMasail()
         val (ayahCount, tafseerCount, hadithCount) = repository.getStats()
         val bookmarks = repository.getBookmarkedAyahs(preferences.value.bookmarks, surahs)
         _uiState.value = _uiState.value.copy(
@@ -82,6 +87,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             surahs = surahs,
             duas = duas,
             hadiths = hadiths,
+            masail = masail,
             bookmarkedResults = bookmarks,
             loadedAyahCount = ayahCount,
             loadedTafseerCount = tafseerCount,
@@ -121,6 +127,26 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 val results = repository.unifiedOfflineSearch(q, category, _uiState.value.surahs)
                 _uiState.value = _uiState.value.copy(searchResults = results)
             }
+        }
+    }
+
+    fun downloadHadithPack(editionId: String, collectionName: String, idOffset: Int) {
+        if (_uiState.value.isDownloadingHadith) return
+        _uiState.value = _uiState.value.copy(
+            isDownloadingHadith = true,
+            hadithDownloadStatus = "Downloading $collectionName..."
+        )
+        viewModelScope.launch {
+            val res = repository.downloadHadithCollection(editionId, collectionName, idOffset)
+            val msg = res.fold(
+                onSuccess = { it },
+                onFailure = { "Download failed (check internet): ${it.localizedMessage}" }
+            )
+            refreshData()
+            _uiState.value = _uiState.value.copy(
+                isDownloadingHadith = false,
+                hadithDownloadStatus = msg
+            )
         }
     }
 

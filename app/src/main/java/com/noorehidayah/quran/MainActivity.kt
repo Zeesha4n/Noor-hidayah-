@@ -248,7 +248,11 @@ fun NoorHidayahApp(vm: MainViewModel) {
                         2 -> HadithAndDuasScreen(
                             hadiths = uiState.hadiths,
                             duas = uiState.duas,
+                            masail = uiState.masail,
                             prefs = prefs,
+                            isDownloadingHadith = uiState.isDownloadingHadith,
+                            hadithDownloadStatus = uiState.hadithDownloadStatus,
+                            onDownloadHadithPack = vm::downloadHadithPack,
                             onToggleHadithBookmark = vm::toggleHadithBookmark,
                             onToggleDuaBookmark = vm::toggleDuaBookmark
                         )
