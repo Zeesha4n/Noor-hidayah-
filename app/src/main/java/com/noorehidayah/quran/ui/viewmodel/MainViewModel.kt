@@ -40,7 +40,8 @@ data class MainUiState(
     val loadedAyahCount: Int = 0,
     val loadedTafseerCount: Int = 0,
     val loadedHadithCount: Int = 0,
-    val importStatusMessage: String? = null
+    val importStatusMessage: String? = null,
+    val startupError: String? = null
 )
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -57,8 +58,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         viewModelScope.launch {
-            repository.initializeOfflineData()
-            refreshData()
+            try {
+                repository.initializeOfflineData()
+                refreshData()
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    isReady = true,
+                    startupError = e.stackTraceToString().take(600)
+                )
+            }
         }
     }
 

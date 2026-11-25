@@ -213,6 +213,7 @@ class QuranDatabase(context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
                 stmt.bindString(9, a.keywordsHinglish)
                 stmt.executeInsert()
             }
+            // Rebuild FTS4 in one fast pass (avoids 6,236 O(N) deletes)
             db.execSQL("DELETE FROM ayahs_fts")
             db.execSQL(
                 "INSERT INTO ayahs_fts(ayah_id, surah_number, transliteration, english, hindi, hinglish, keywords_hinglish) " +

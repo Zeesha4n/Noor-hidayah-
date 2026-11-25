@@ -197,6 +197,12 @@ fun NoorHidayahApp(vm: MainViewModel) {
             ) {
                 if (!uiState.isReady) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                } else if (uiState.startupError != null) {
+                    Text(
+                        text = "Startup Error:\n${uiState.startupError}",
+                        modifier = Modifier.align(Alignment.Center).padding(16.dp),
+                        color = MaterialTheme.colorScheme.error
+                    )
                 } else {
                     when (activeTab) {
                         0 -> HomeSearchScreen(
