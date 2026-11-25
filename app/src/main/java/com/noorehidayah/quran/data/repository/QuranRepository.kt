@@ -168,7 +168,7 @@ class QuranRepository(private val context: Context) {
                 id = o.getString("id"),
                 surahNumber = o.getInt("surahNumber"),
                 ayahNumber = o.getInt("ayahNumber"),
-                arabic = o.getString("arabic"),
+                arabic = o.optString("arabic", ""),
                 transliteration = o.optString("transliteration", ""),
                 english = o.optString("english", ""),
                 hindi = o.optString("hindi", ""),
@@ -199,17 +199,17 @@ class QuranRepository(private val context: Context) {
             val o = arr.getJSONObject(i)
             DuaItem(
                 id = o.getInt("id"),
-                category = o.getString("category"),
-                titleEnglish = o.getString("titleEnglish"),
-                titleHinglish = o.getString("titleHinglish"),
-                titleHindi = o.getString("titleHindi"),
-                titleArabic = o.getString("titleArabic"),
-                arabic = o.getString("arabic"),
-                transliteration = o.getString("transliteration"),
-                english = o.getString("english"),
-                hinglish = o.getString("hinglish"),
-                hindi = o.getString("hindi"),
-                reference = o.getString("reference")
+                category = o.optString("category", ""),
+                titleEnglish = o.optString("titleEnglish", ""),
+                titleHinglish = o.optString("titleHinglish", ""),
+                titleHindi = o.optString("titleHindi", ""),
+                titleArabic = o.optString("titleArabic", ""),
+                arabic = o.optString("arabic", ""),
+                transliteration = o.optString("transliteration", ""),
+                english = o.optString("english", ""),
+                hinglish = o.optString("hinglish", ""),
+                hindi = o.optString("hindi", ""),
+                reference = o.optString("reference", "")
             )
         }
     }
@@ -225,7 +225,7 @@ class QuranRepository(private val context: Context) {
                 hadithNumber = o.optString("hadithNumber", ""),
                 grading = o.optString("grading", "Sahih"),
                 topic = o.optString("topic", ""),
-                arabic = o.getString("arabic"),
+                arabic = o.optString("arabic", ""),
                 transliteration = o.optString("transliteration", ""),
                 english = o.optString("english", ""),
                 hinglish = o.optString("hinglish", ""),
