@@ -28,6 +28,13 @@ enum class AsrMethod(val displayName: String, val shadowFactor: Double) {
     SHAFII("Shafi'i / Standard (1x)", 1.0)
 }
 
+enum class SearchCategory(val label: String) {
+    ALL("All"),
+    QURAN("Quran"),
+    HADITH("Hadith"),
+    DUAS("Duas & Azkar")
+}
+
 data class Surah(
     val surahNumber: Int,
     val nameArabic: String,
@@ -80,6 +87,28 @@ data class SearchResult(
     val tafseers: List<TafseerEntry>
 )
 
+data class HadithItem(
+    val id: Int,
+    val collection: String,
+    val bookNumber: String,
+    val hadithNumber: String,
+    val grading: String,
+    val topic: String,
+    val arabic: String,
+    val transliteration: String,
+    val english: String,
+    val hinglish: String,
+    val hindi: String,
+    val keywordsHinglish: String
+) {
+    fun translationFor(language: AppLanguage): String = when (language) {
+        AppLanguage.HINGLISH -> hinglish
+        AppLanguage.HINDI -> hindi
+        AppLanguage.ENGLISH -> english
+        AppLanguage.ARABIC -> transliteration
+    }
+}
+
 data class DuaItem(
     val id: Int,
     val category: String,
@@ -109,6 +138,13 @@ data class DuaItem(
     }
 }
 
+data class UnifiedSearchResults(
+    val ayahs: List<SearchResult> = emptyList(),
+    val hadiths: List<HadithItem> = emptyList(),
+    val duas: List<DuaItem> = emptyList(),
+    val detectedIntent: String? = null
+)
+
 data class CityLocation(
     val name: String,
     val latitude: Double,
@@ -122,13 +158,20 @@ data class UserPreferences(
     val arabicFontSizeSp: Float = 26f,
     val translationFontSizeSp: Float = 15f,
     val darkMode: Boolean = false,
+    val onboardingCompleted: Boolean = false,
     val lastReadSurah: Int = 1,
     val lastReadAyah: Int = 1,
     val bookmarks: Set<String> = emptySet(),
+    val bookmarkedHadiths: Set<String> = emptySet(),
+    val bookmarkedDuas: Set<String> = emptySet(),
+    val searchHistory: List<String> = emptyList(),
     val tasbihCount: Int = 0,
     val tasbihTarget: Int = 33,
     val tasbihLabel: String = "SubhanAllah",
+    val tasbihSoundEnabled: Boolean = true,
+    val tasbihDailyTotal: Int = 0,
     val selectedCityIndex: Int = 0,
     val prayerMethod: PrayerCalcMethod = PrayerCalcMethod.KARACHI,
-    val asrMethod: AsrMethod = AsrMethod.HANAFI
+    val asrMethod: AsrMethod = AsrMethod.HANAFI,
+    val remindersEnabled: Boolean = false
 )

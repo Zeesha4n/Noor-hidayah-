@@ -21,13 +21,12 @@ data class DailyPrayerTimes(
     val dhuhr: String,
     val asr: String,
     val maghrib: String,
-    val isha: String
+    val isha: String,
+    val nextPrayerName: String = "Fajr",
+    val nextPrayerTime: String = "",
+    val nextPrayerCountdown: String = ""
 )
 
-/**
- * Pure-Kotlin 100% offline astronomical Prayer Times calculator.
- * No internet or GPS permission required—works immediately with built-in cities.
- */
 object PrayerTimeCalculator {
 
     val builtInCities = listOf(
@@ -68,14 +67,52 @@ object PrayerTimeCalculator {
         val isha = dhuhr + hourAngle(method.ishaAngle, city.latitude, decl)
         val asr = dhuhr + asrTimeOffset(asrMethod.shadowFactor, city.latitude, decl)
 
+        val nowMinutes = calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE)
+        val prayers = listOf(
+            "Fajr" to toMinutes(fajr),
+            "Dhuhr" to toMinutes(dhuhr),
+            "Asr" to toMinutes(asr),
+            "Maghrib" to toMinutes(maghrib),
+            "Isha" to toMinutes(isha)
+        )
+
+        var nextName = "Fajr"
+        var diffMinutes = (prayers[0].second + 24 * 60) - nowMinutes
+        var nextTimeStr = formatTime(fajr)
+
+        for ((name, mins) in prayers) {
+            if (mins > nowMinutes) {
+                nextName = name
+                diffMinutes = mins - nowMinutes
+                nextTimeStr = when (name) {
+                    "Fajr" -> formatTime(fajr)
+                    "Dhuhr" -> formatTime(dhuhr)
+                    "Asr" -> formatTime(asr)
+                    "Maghrib" -> formatTime(maghrib)
+                    else -> formatTime(isha)
+                }
+                break
+            }
+        }
+        val remH = diffMinutes / 60
+        val remM = diffMinutes % 60
+        val countdown = if (remH > 0) "in ${remH}h ${remM}m" else "in ${remM}m"
+
         return DailyPrayerTimes(
             fajr = formatTime(fajr),
             sunrise = formatTime(sunrise),
             dhuhr = formatTime(dhuhr),
             asr = formatTime(asr),
             maghrib = formatTime(maghrib),
-            isha = formatTime(isha)
+            isha = formatTime(isha),
+            nextPrayerName = nextName,
+            nextPrayerTime = nextTimeStr,
+            nextPrayerCountdown = countdown
         )
+    }
+
+    private fun toMinutes(hoursInput: Double): Int {
+        return ((fixHour(hoursInput) * 60.0) + 0.5).toInt() % (24 * 60)
     }
 
     private fun julianDate(year: Int, month: Int, day: Int): Double {

@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.noorehidayah.quran.data.model.Ayah
 import com.noorehidayah.quran.data.model.DuaItem
+import com.noorehidayah.quran.data.model.HadithItem
 import com.noorehidayah.quran.data.model.Surah
 import com.noorehidayah.quran.data.model.TafseerEntry
 import com.noorehidayah.quran.data.search.HinglishSearchEngine
@@ -14,7 +15,7 @@ class QuranDatabase(context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
 
     companion object {
         private const val DB_NAME = "noor_hidayah_offline.db"
-        private const val DB_VERSION = 1
+        private const val DB_VERSION = 2
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -49,7 +50,6 @@ class QuranDatabase(context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
         )
         db.execSQL("CREATE INDEX idx_ayahs_surah ON ayahs(surah_number, ayah_number)")
 
-        // FTS4 is universally supported across all Android API 24+ devices without native extension issues
         db.execSQL(
             """
             CREATE VIRTUAL TABLE ayahs_fts USING fts4(
@@ -98,6 +98,54 @@ class QuranDatabase(context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
             )
             """.trimIndent()
         )
+
+        db.execSQL(
+            """
+            CREATE VIRTUAL TABLE duas_fts USING fts4(
+                dua_id,
+                category,
+                title_english,
+                title_hinglish,
+                title_hindi,
+                english,
+                hinglish,
+                hindi
+            )
+            """.trimIndent()
+        )
+
+        db.execSQL(
+            """
+            CREATE TABLE hadiths (
+                id INTEGER PRIMARY KEY,
+                collection TEXT NOT NULL,
+                book_number TEXT NOT NULL,
+                hadith_number TEXT NOT NULL,
+                grading TEXT NOT NULL,
+                topic TEXT NOT NULL,
+                arabic TEXT NOT NULL,
+                transliteration TEXT NOT NULL,
+                english TEXT NOT NULL,
+                hinglish TEXT NOT NULL,
+                hindi TEXT NOT NULL,
+                keywords_hinglish TEXT NOT NULL
+            )
+            """.trimIndent()
+        )
+
+        db.execSQL(
+            """
+            CREATE VIRTUAL TABLE hadiths_fts USING fts4(
+                hadith_id,
+                collection,
+                topic,
+                english,
+                hinglish,
+                hindi,
+                keywords_hinglish
+            )
+            """.trimIndent()
+        )
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -106,14 +154,21 @@ class QuranDatabase(context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
         db.execSQL("DROP TABLE IF EXISTS ayahs_fts")
         db.execSQL("DROP TABLE IF EXISTS tafseer")
         db.execSQL("DROP TABLE IF EXISTS duas")
+        db.execSQL("DROP TABLE IF EXISTS duas_fts")
+        db.execSQL("DROP TABLE IF EXISTS hadiths")
+        db.execSQL("DROP TABLE IF EXISTS hadiths_fts")
         onCreate(db)
     }
 
     fun isSeeded(): Boolean {
         val db = readableDatabase
-        db.rawQuery("SELECT COUNT(*) FROM surahs", null).use { cursor ->
-            return cursor.moveToFirst() && cursor.getInt(0) > 0
+        val surahsCount = db.rawQuery("SELECT COUNT(*) FROM surahs", null).use { c ->
+            if (c.moveToFirst()) c.getInt(0) else 0
         }
+        val hadithCount = db.rawQuery("SELECT COUNT(*) FROM hadiths", null).use { c ->
+            if (c.moveToFirst()) c.getInt(0) else 0
+        }
+        return surahsCount > 0 && hadithCount > 0
     }
 
     fun insertSurahs(surahs: List<Surah>) {
@@ -215,6 +270,58 @@ class QuranDatabase(context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
                     put("reference", d.reference)
                 }
                 db.insertWithOnConflict("duas", null, cv, SQLiteDatabase.CONFLICT_REPLACE)
+
+                db.delete("duas_fts", "dua_id = ?", arrayOf(d.id.toString()))
+                val ftsCv = ContentValues().apply {
+                    put("dua_id", d.id.toString())
+                    put("category", d.category)
+                    put("title_english", d.titleEnglish)
+                    put("title_hinglish", d.titleHinglish)
+                    put("title_hindi", d.titleHindi)
+                    put("english", d.english)
+                    put("hinglish", d.hinglish)
+                    put("hindi", d.hindi)
+                }
+                db.insert("duas_fts", null, ftsCv)
+            }
+            db.setTransactionSuccessful()
+        } finally {
+            db.endTransaction()
+        }
+    }
+
+    fun insertHadiths(hadiths: List<HadithItem>) {
+        val db = writableDatabase
+        db.beginTransaction()
+        try {
+            for (h in hadiths) {
+                val cv = ContentValues().apply {
+                    put("id", h.id)
+                    put("collection", h.collection)
+                    put("book_number", h.bookNumber)
+                    put("hadith_number", h.hadithNumber)
+                    put("grading", h.grading)
+                    put("topic", h.topic)
+                    put("arabic", h.arabic)
+                    put("transliteration", h.transliteration)
+                    put("english", h.english)
+                    put("hinglish", h.hinglish)
+                    put("hindi", h.hindi)
+                    put("keywords_hinglish", h.keywordsHinglish)
+                }
+                db.insertWithOnConflict("hadiths", null, cv, SQLiteDatabase.CONFLICT_REPLACE)
+
+                db.delete("hadiths_fts", "hadith_id = ?", arrayOf(h.id.toString()))
+                val ftsCv = ContentValues().apply {
+                    put("hadith_id", h.id.toString())
+                    put("collection", h.collection)
+                    put("topic", h.topic)
+                    put("english", h.english)
+                    put("hinglish", h.hinglish)
+                    put("hindi", h.hindi)
+                    put("keywords_hinglish", h.keywordsHinglish)
+                }
+                db.insert("hadiths_fts", null, ftsCv)
             }
             db.setTransactionSuccessful()
         } finally {
@@ -258,19 +365,7 @@ class QuranDatabase(context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
             arrayOf(surahNumber.toString())
         ).use { c ->
             while (c.moveToNext()) {
-                list.add(
-                    Ayah(
-                        id = c.getString(0),
-                        surahNumber = c.getInt(1),
-                        ayahNumber = c.getInt(2),
-                        arabic = c.getString(3),
-                        transliteration = c.getString(4),
-                        english = c.getString(5),
-                        hindi = c.getString(6),
-                        hinglish = c.getString(7),
-                        keywordsHinglish = c.getString(8)
-                    )
-                )
+                list.add(readAyahCursor(c))
             }
         }
         return list
@@ -285,23 +380,23 @@ class QuranDatabase(context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
             ids.toTypedArray()
         ).use { c ->
             while (c.moveToNext()) {
-                list.add(
-                    Ayah(
-                        id = c.getString(0),
-                        surahNumber = c.getInt(1),
-                        ayahNumber = c.getInt(2),
-                        arabic = c.getString(3),
-                        transliteration = c.getString(4),
-                        english = c.getString(5),
-                        hindi = c.getString(6),
-                        hinglish = c.getString(7),
-                        keywordsHinglish = c.getString(8)
-                    )
-                )
+                list.add(readAyahCursor(c))
             }
         }
         return list
     }
+
+    private fun readAyahCursor(c: android.database.Cursor): Ayah = Ayah(
+        id = c.getString(0),
+        surahNumber = c.getInt(1),
+        ayahNumber = c.getInt(2),
+        arabic = c.getString(3),
+        transliteration = c.getString(4),
+        english = c.getString(5),
+        hindi = c.getString(6),
+        hinglish = c.getString(7),
+        keywordsHinglish = c.getString(8)
+    )
 
     fun getTafseersForAyah(ayahId: String): List<TafseerEntry> {
         val list = mutableListOf<TafseerEntry>()
@@ -329,7 +424,6 @@ class QuranDatabase(context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
         val trimmed = rawQuery.trim()
         if (trimmed.isEmpty()) return emptyList()
 
-        // Direct reference lookup e.g. "2:255" or "94:5"
         if (Regex("^\\d+:\\d+$").matches(trimmed)) {
             return getAyahsByIds(setOf(trimmed))
         }
@@ -350,11 +444,9 @@ class QuranDatabase(context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
                     }
                 }
             } catch (_: Exception) {
-                // Fallback cleanly to LIKE search below if FTS syntax is unusual
             }
         }
 
-        // Fallback LIKE search (also handles Hindi Devanagari & Arabic substrings reliably)
         if (matchedIds.isEmpty()) {
             val likePattern = "%$trimmed%"
             readableDatabase.rawQuery(
@@ -373,6 +465,76 @@ class QuranDatabase(context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
         }
 
         return getAyahsByIds(matchedIds)
+    }
+
+    fun searchHadithsOffline(rawQuery: String): List<HadithItem> {
+        val trimmed = rawQuery.trim()
+        if (trimmed.isEmpty()) return emptyList()
+        val tokens = HinglishSearchEngine.expandQueryTokens(trimmed)
+        val matchedIds = linkedSetOf<Int>()
+        val ftsMatch = HinglishSearchEngine.buildFtsMatchQuery(tokens)
+        if (ftsMatch.isNotEmpty()) {
+            try {
+                readableDatabase.rawQuery(
+                    "SELECT hadith_id FROM hadiths_fts WHERE hadiths_fts MATCH ? LIMIT 25",
+                    arrayOf(ftsMatch)
+                ).use { c ->
+                    while (c.moveToNext()) {
+                        c.getString(0).toIntOrNull()?.let { matchedIds.add(it) }
+                    }
+                }
+            } catch (_: Exception) {
+            }
+        }
+        if (matchedIds.isEmpty()) {
+            val likePattern = "%$trimmed%"
+            readableDatabase.rawQuery(
+                "SELECT id FROM hadiths WHERE hinglish LIKE ? OR english LIKE ? OR hindi LIKE ? OR collection LIKE ? OR topic LIKE ? LIMIT 25",
+                arrayOf(likePattern, likePattern, likePattern, likePattern, likePattern)
+            ).use { c ->
+                while (c.moveToNext()) {
+                    matchedIds.add(c.getInt(0))
+                }
+            }
+        }
+        if (matchedIds.isEmpty()) return emptyList()
+        val all = getAllHadiths().associateBy { it.id }
+        return matchedIds.mapNotNull { all[it] }
+    }
+
+    fun searchDuasOffline(rawQuery: String): List<DuaItem> {
+        val trimmed = rawQuery.trim()
+        if (trimmed.isEmpty()) return emptyList()
+        val tokens = HinglishSearchEngine.expandQueryTokens(trimmed)
+        val matchedIds = linkedSetOf<Int>()
+        val ftsMatch = HinglishSearchEngine.buildFtsMatchQuery(tokens)
+        if (ftsMatch.isNotEmpty()) {
+            try {
+                readableDatabase.rawQuery(
+                    "SELECT dua_id FROM duas_fts WHERE duas_fts MATCH ? LIMIT 25",
+                    arrayOf(ftsMatch)
+                ).use { c ->
+                    while (c.moveToNext()) {
+                        c.getString(0).toIntOrNull()?.let { matchedIds.add(it) }
+                    }
+                }
+            } catch (_: Exception) {
+            }
+        }
+        if (matchedIds.isEmpty()) {
+            val likePattern = "%$trimmed%"
+            readableDatabase.rawQuery(
+                "SELECT id FROM duas WHERE title_hinglish LIKE ? OR title_english LIKE ? OR hinglish LIKE ? OR english LIKE ? OR hindi LIKE ? OR category LIKE ? LIMIT 25",
+                arrayOf(likePattern, likePattern, likePattern, likePattern, likePattern, likePattern)
+            ).use { c ->
+                while (c.moveToNext()) {
+                    matchedIds.add(c.getInt(0))
+                }
+            }
+        }
+        if (matchedIds.isEmpty()) return emptyList()
+        val all = getAllDuas().associateBy { it.id }
+        return matchedIds.mapNotNull { all[it] }
     }
 
     fun getAllDuas(): List<DuaItem> {
@@ -403,6 +565,34 @@ class QuranDatabase(context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
         return list
     }
 
+    fun getAllHadiths(): List<HadithItem> {
+        val list = mutableListOf<HadithItem>()
+        readableDatabase.rawQuery(
+            "SELECT id, collection, book_number, hadith_number, grading, topic, arabic, transliteration, english, hinglish, hindi, keywords_hinglish FROM hadiths ORDER BY id ASC",
+            null
+        ).use { c ->
+            while (c.moveToNext()) {
+                list.add(
+                    HadithItem(
+                        id = c.getInt(0),
+                        collection = c.getString(1),
+                        bookNumber = c.getString(2),
+                        hadithNumber = c.getString(3),
+                        grading = c.getString(4),
+                        topic = c.getString(5),
+                        arabic = c.getString(6),
+                        transliteration = c.getString(7),
+                        english = c.getString(8),
+                        hinglish = c.getString(9),
+                        hindi = c.getString(10),
+                        keywordsHinglish = c.getString(11)
+                    )
+                )
+            }
+        }
+        return list
+    }
+
     fun getTotalLoadedAyahs(): Int {
         readableDatabase.rawQuery("SELECT COUNT(*) FROM ayahs", null).use { c ->
             return if (c.moveToFirst()) c.getInt(0) else 0
@@ -411,6 +601,12 @@ class QuranDatabase(context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
 
     fun getTotalLoadedTafseers(): Int {
         readableDatabase.rawQuery("SELECT COUNT(*) FROM tafseer", null).use { c ->
+            return if (c.moveToFirst()) c.getInt(0) else 0
+        }
+    }
+
+    fun getTotalLoadedHadiths(): Int {
+        readableDatabase.rawQuery("SELECT COUNT(*) FROM hadiths", null).use { c ->
             return if (c.moveToFirst()) c.getInt(0) else 0
         }
     }

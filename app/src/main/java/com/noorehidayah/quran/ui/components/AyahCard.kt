@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -21,8 +22,11 @@ import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.MenuBook
+import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -33,9 +37,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,6 +59,8 @@ import com.noorehidayah.quran.data.model.FiqhSchool
 import com.noorehidayah.quran.data.model.Surah
 import com.noorehidayah.quran.data.model.TafseerEntry
 import com.noorehidayah.quran.ui.i18n.Strings
+import com.noorehidayah.quran.utils.QuranAudioPlayer
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -68,6 +77,18 @@ fun AyahCard(
     onOpenSurah: (() -> Unit)? = null
 ) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val audioState by QuranAudioPlayer.state.collectAsState()
+    val isThisPlaying = audioState.activeAyahId == ayah.id && audioState.isPlaying
+    val isThisDownloading = audioState.activeAyahId == ayah.id && audioState.isDownloading
+
+    LaunchedEffect(audioState.errorMessage) {
+        val msg = audioState.errorMessage
+        if (!msg.isNullOrBlank()) {
+            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+        }
+    }
+
     var cardLang by remember(globalLanguage) { mutableStateOf(globalLanguage) }
     var showTafseer by remember { mutableStateOf(false) }
     var selectedFiqh by remember(defaultFiqh) { mutableStateOf(defaultFiqh) }
@@ -79,7 +100,6 @@ fun AyahCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            // Header: Surah & Ayah badge + actions
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -105,6 +125,27 @@ fun AyahCard(
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     IconButton(onClick = {
+                        scope.launch {
+                            QuranAudioPlayer.togglePlayAyah(
+                                context = context,
+                                ayahId = ayah.id,
+                                surahNumber = ayah.surahNumber,
+                                ayahNumber = ayah.ayahNumber
+                            )
+                        }
+                    }) {
+                        if (isThisDownloading) {
+                            CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
+                        } else {
+                            Icon(
+                                imageVector = if (isThisPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
+                                contentDescription = "Play Tilawat",
+                                tint = if (isThisPlaying) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+
+                    IconButton(onClick = {
                         val copyText = "${ayah.arabic}\n\n${ayah.translationFor(cardLang)}\n(${surah?.nameEnglish ?: ""} ${ayah.id})"
                         val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                         cm.setPrimaryClip(ClipData.newPlainText("Ayah", copyText))
@@ -128,7 +169,6 @@ fun AyahCard(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            // Arabic Verse (Right-to-Left)
             CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
                 Text(
                     text = ayah.arabic,
@@ -152,7 +192,6 @@ fun AyahCard(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            // Instant 1-tap Translation Language Switcher
             Row(
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -168,7 +207,6 @@ fun AyahCard(
 
             Spacer(modifier = Modifier.height(6.dp))
 
-            // Translation Text
             Text(
                 text = ayah.translationFor(cardLang),
                 style = MaterialTheme.typography.bodyLarge,
@@ -178,7 +216,6 @@ fun AyahCard(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Bottom Actions: Multi-Fiqh Tafseer toggle + optional Open Surah
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -196,7 +233,6 @@ fun AyahCard(
                 }
             }
 
-            // Expandable Multi-Fiqh Tafseer Panel
             AnimatedVisibility(visible = showTafseer) {
                 Column(modifier = Modifier.fillMaxWidth().padding(top = 6.dp)) {
                     HorizontalDivider()

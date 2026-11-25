@@ -3,17 +3,31 @@ package com.noorehidayah.quran
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.MenuBook
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -21,7 +35,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -31,9 +44,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.noorehidayah.quran.data.model.AppLanguage
+import com.noorehidayah.quran.data.model.FiqhSchool
 import com.noorehidayah.quran.ui.i18n.AppStrings
+import com.noorehidayah.quran.ui.screens.HadithAndDuasScreen
 import com.noorehidayah.quran.ui.screens.HomeSearchScreen
 import com.noorehidayah.quran.ui.screens.QuranScreen
 import com.noorehidayah.quran.ui.screens.SettingsScreen
@@ -51,7 +67,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun NoorHidayahApp(vm: MainViewModel) {
     val prefs by vm.preferences.collectAsState()
@@ -60,6 +76,62 @@ fun NoorHidayahApp(vm: MainViewModel) {
     var activeTab by remember { mutableIntStateOf(0) }
 
     NoorHidayahTheme(darkTheme = prefs.darkMode) {
+        if (!prefs.onboardingCompleted) {
+            Box(
+                modifier = Modifier.fillMaxSize().padding(24.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Card(
+                    shape = RoundedCornerShape(22.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                ) {
+                    Column(
+                        modifier = Modifier.padding(22.dp),
+                        verticalArrangement = Arrangement.spacedBy(14.dp)
+                    ) {
+                        Text(
+                            text = "Assalamu Alaikum • Noor-e-Hidayah",
+                            style = MaterialTheme.typography.headlineSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        Text(
+                            text = "100% Offline Quran, Multi-Fiqh Tafseer, Hadith, Duas, Namaz Waqt, Qibla Compass & Hijri Calendar.",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                        Text("Apni Zubaan (Language) Chunein:", fontWeight = FontWeight.SemiBold)
+                        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            AppLanguage.entries.forEach { lang ->
+                                FilterChip(
+                                    selected = prefs.language == lang,
+                                    onClick = { vm.setLanguage(lang) },
+                                    label = { Text(lang.displayName) }
+                                )
+                            }
+                        }
+                        Text("Default Fiqh Chunein:", fontWeight = FontWeight.SemiBold)
+                        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            FiqhSchool.entries.forEach { fiqh ->
+                                FilterChip(
+                                    selected = prefs.defaultFiqh == fiqh,
+                                    onClick = { vm.setDefaultFiqh(fiqh) },
+                                    label = { Text(fiqh.displayName) }
+                                )
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(6.dp))
+                        Button(
+                            onClick = vm::completeOnboarding,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("Shuru Karein", fontWeight = FontWeight.Bold)
+                        }
+                    }
+                }
+            }
+            return@NoorHidayahTheme
+        }
+
         Scaffold(
             topBar = {
                 TopAppBar(
@@ -69,7 +141,6 @@ fun NoorHidayahApp(vm: MainViewModel) {
                         titleContentColor = MaterialTheme.colorScheme.onPrimary
                     ),
                     actions = {
-                        // Quick cycle language right from the Top Bar
                         TextButton(onClick = {
                             val entries = AppLanguage.entries
                             val next = entries[(prefs.language.ordinal + 1) % entries.size]
@@ -89,8 +160,8 @@ fun NoorHidayahApp(vm: MainViewModel) {
                     NavigationBarItem(
                         selected = activeTab == 0,
                         onClick = { activeTab = 0 },
-                        icon = { Icon(Icons.Default.Search, contentDescription = null) },
-                        label = { Text(strings.tabSearch) }
+                        icon = { Icon(Icons.Default.Home, contentDescription = null) },
+                        label = { Text("Home") }
                     )
                     NavigationBarItem(
                         selected = activeTab == 1,
@@ -101,12 +172,18 @@ fun NoorHidayahApp(vm: MainViewModel) {
                     NavigationBarItem(
                         selected = activeTab == 2,
                         onClick = { activeTab = 2 },
-                        icon = { Icon(Icons.Default.Build, contentDescription = null) },
-                        label = { Text(strings.tabTools) }
+                        icon = { Icon(Icons.Default.AutoAwesome, contentDescription = null) },
+                        label = { Text("Hadith") }
                     )
                     NavigationBarItem(
                         selected = activeTab == 3,
                         onClick = { activeTab = 3 },
+                        icon = { Icon(Icons.Default.Build, contentDescription = null) },
+                        label = { Text(strings.tabTools) }
+                    )
+                    NavigationBarItem(
+                        selected = activeTab == 4,
+                        onClick = { activeTab = 4 },
                         icon = { Icon(Icons.Default.Settings, contentDescription = null) },
                         label = { Text(strings.tabSettings) }
                     )
@@ -127,11 +204,13 @@ fun NoorHidayahApp(vm: MainViewModel) {
                             prefs = prefs,
                             strings = strings,
                             onQueryChange = vm::onSearchQueryChange,
+                            onCategoryChange = vm::onSearchCategoryChange,
                             onOpenSurah = { surahNum ->
                                 vm.openSurah(surahNum)
                                 activeTab = 1
                             },
-                            onToggleBookmark = vm::toggleBookmark
+                            onToggleBookmark = vm::toggleBookmark,
+                            onToggleHadithBookmark = vm::toggleHadithBookmark
                         )
                         1 -> QuranScreen(
                             uiState = uiState,
@@ -141,17 +220,24 @@ fun NoorHidayahApp(vm: MainViewModel) {
                             onCloseReader = vm::closeSurahReader,
                             onToggleBookmark = vm::toggleBookmark
                         )
-                        2 -> ToolsScreen(
+                        2 -> HadithAndDuasScreen(
+                            hadiths = uiState.hadiths,
                             duas = uiState.duas,
+                            prefs = prefs,
+                            onToggleHadithBookmark = vm::toggleHadithBookmark,
+                            onToggleDuaBookmark = vm::toggleDuaBookmark
+                        )
+                        3 -> ToolsScreen(
                             prefs = prefs,
                             strings = strings,
                             onIncrementTasbih = vm::incrementTasbih,
                             onResetTasbih = vm::resetTasbih,
+                            onToggleTasbihSound = vm::toggleTasbihSound,
                             onSelectTasbihPreset = vm::setTasbihPreset,
                             onSelectCity = vm::setCityIndex,
                             onSelectAsrMethod = vm::setAsrMethod
                         )
-                        3 -> SettingsScreen(
+                        4 -> SettingsScreen(
                             uiState = uiState,
                             prefs = prefs,
                             strings = strings,
@@ -160,6 +246,7 @@ fun NoorHidayahApp(vm: MainViewModel) {
                             onArabicSizeChange = vm::setArabicFontSize,
                             onDarkModeChange = vm::setDarkMode,
                             onPrayerMethodChange = vm::setPrayerMethod,
+                            onRemindersChange = vm::setRemindersEnabled,
                             onImportPack = vm::importPack
                         )
                     }

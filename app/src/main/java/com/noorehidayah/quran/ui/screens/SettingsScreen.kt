@@ -1,6 +1,9 @@
 package com.noorehidayah.quran.ui.screens
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
@@ -27,14 +30,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import com.noorehidayah.quran.data.model.AppLanguage
 import com.noorehidayah.quran.data.model.FiqhSchool
 import com.noorehidayah.quran.data.model.PrayerCalcMethod
 import com.noorehidayah.quran.data.model.UserPreferences
 import com.noorehidayah.quran.ui.i18n.Strings
 import com.noorehidayah.quran.ui.viewmodel.MainUiState
+import com.noorehidayah.quran.utils.ReminderScheduler
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -47,12 +53,21 @@ fun SettingsScreen(
     onArabicSizeChange: (Float) -> Unit,
     onDarkModeChange: (Boolean) -> Unit,
     onPrayerMethodChange: (PrayerCalcMethod) -> Unit,
+    onRemindersChange: (Boolean) -> Unit,
     onImportPack: (Uri) -> Unit
 ) {
+    val context = LocalContext.current
     val filePicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument()
     ) { uri ->
         if (uri != null) onImportPack(uri)
+    }
+
+    val notifPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        onRemindersChange(granted)
+        if (granted) ReminderScheduler.scheduleDailyReminder(context, true)
     }
 
     LazyColumn(
@@ -103,6 +118,30 @@ fun SettingsScreen(
                     Text(strings.darkMode, style = MaterialTheme.typography.bodyLarge)
                     Switch(checked = prefs.darkMode, onCheckedChange = onDarkModeChange)
                 }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text("Daily Islamic Reminders (7:00 AM)", style = MaterialTheme.typography.bodyLarge)
+                    Switch(
+                        checked = prefs.remindersEnabled,
+                        onCheckedChange = { enable ->
+                            if (!enable) {
+                                onRemindersChange(false)
+                                ReminderScheduler.scheduleDailyReminder(context, false)
+                            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+                                ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS)
+                                != PackageManager.PERMISSION_GRANTED
+                            ) {
+                                notifPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                            } else {
+                                onRemindersChange(true)
+                                ReminderScheduler.scheduleDailyReminder(context, true)
+                            }
+                        }
+                    )
+                }
             }
         }
 
@@ -129,12 +168,12 @@ fun SettingsScreen(
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(
-                    text = "Offline DB: ${uiState.loadedAyahCount} Ayahs • ${uiState.loadedTafseerCount} Tafseer entries loaded",
+                    text = "Offline DB: ${uiState.loadedAyahCount} Ayahs • ${uiState.loadedTafseerCount} Tafseers • ${uiState.loadedHadithCount} Hadiths",
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.primary
                 )
                 Spacer(modifier = Modifier.height(10.dp))
-                Button(onClick = { filePicker.launch(arrayOf("application/json", "text/*")) }) {
+                Button(onClick = { filePicker.launch(arrayOf("*/*")) }) {
                     Text("Select JSON Pack")
                 }
                 if (uiState.importStatusMessage != null) {
@@ -146,6 +185,16 @@ fun SettingsScreen(
                         color = MaterialTheme.colorScheme.primary
                     )
                 }
+            }
+        }
+
+        item {
+            SettingCard(title = "Privacy & Offline Guarantee") {
+                Text(
+                    text = "Noor-e-Hidayah aapka koi personal data collect ya track nahi karta. Sabhi bookmarks, search history, aur settings sirf aapke phone par local rehti hain.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
         }
     }

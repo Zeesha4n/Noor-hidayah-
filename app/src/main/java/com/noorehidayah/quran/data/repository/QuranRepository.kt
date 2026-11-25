@@ -5,9 +5,13 @@ import android.net.Uri
 import com.noorehidayah.quran.data.local.QuranDatabase
 import com.noorehidayah.quran.data.model.Ayah
 import com.noorehidayah.quran.data.model.DuaItem
+import com.noorehidayah.quran.data.model.HadithItem
+import com.noorehidayah.quran.data.model.SearchCategory
 import com.noorehidayah.quran.data.model.SearchResult
 import com.noorehidayah.quran.data.model.Surah
 import com.noorehidayah.quran.data.model.TafseerEntry
+import com.noorehidayah.quran.data.model.UnifiedSearchResults
+import com.noorehidayah.quran.data.search.HinglishSearchEngine
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
@@ -23,17 +27,11 @@ class QuranRepository(private val context: Context) {
     }
 
     private fun seedFromAssets() {
-        val surahsJson = readAssetText("data/surahs.json")
-        db.insertSurahs(parseSurahs(surahsJson))
-
-        val ayahsJson = readAssetText("data/ayahs.json")
-        db.insertAyahs(parseAyahs(ayahsJson))
-
-        val tafseerJson = readAssetText("data/tafseer.json")
-        db.insertTafseers(parseTafseer(tafseerJson))
-
-        val duasJson = readAssetText("data/duas.json")
-        db.insertDuas(parseDuas(duasJson))
+        db.insertSurahs(parseSurahs(readAssetText("data/surahs.json")))
+        db.insertAyahs(parseAyahs(readAssetText("data/ayahs.json")))
+        db.insertTafseers(parseTafseer(readAssetText("data/tafseer.json")))
+        db.insertDuas(parseDuas(readAssetText("data/duas.json")))
+        db.insertHadiths(parseHadiths(readAssetText("data/hadiths.json")))
     }
 
     private fun readAssetText(path: String): String {
@@ -50,18 +48,39 @@ class QuranRepository(private val context: Context) {
             ayahs.map { ayah -> ayah to db.getTafseersForAyah(ayah.id) }
         }
 
-    suspend fun searchByMeaning(query: String, allSurahs: List<Surah>): List<SearchResult> =
-        withContext(Dispatchers.IO) {
-            val surahMap = allSurahs.associateBy { it.surahNumber }
-            val matchedAyahs = db.searchAyahsOffline(query)
-            matchedAyahs.map { ayah ->
+    suspend fun unifiedOfflineSearch(
+        query: String,
+        category: SearchCategory,
+        allSurahs: List<Surah>
+    ): UnifiedSearchResults = withContext(Dispatchers.IO) {
+        val surahMap = allSurahs.associateBy { it.surahNumber }
+        val intentHint = HinglishSearchEngine.detectIntentHint(query)
+
+        val ayahResults = if (category == SearchCategory.ALL || category == SearchCategory.QURAN) {
+            db.searchAyahsOffline(query).map { ayah ->
                 SearchResult(
                     ayah = ayah,
                     surah = surahMap[ayah.surahNumber],
                     tafseers = db.getTafseersForAyah(ayah.id)
                 )
             }
-        }
+        } else emptyList()
+
+        val hadithResults = if (category == SearchCategory.ALL || category == SearchCategory.HADITH) {
+            db.searchHadithsOffline(query)
+        } else emptyList()
+
+        val duaResults = if (category == SearchCategory.ALL || category == SearchCategory.DUAS) {
+            db.searchDuasOffline(query)
+        } else emptyList()
+
+        UnifiedSearchResults(
+            ayahs = ayahResults,
+            hadiths = hadithResults,
+            duas = duaResults,
+            detectedIntent = intentHint
+        )
+    }
 
     suspend fun getBookmarkedAyahs(ids: Set<String>, allSurahs: List<Surah>): List<SearchResult> =
         withContext(Dispatchers.IO) {
@@ -79,14 +98,14 @@ class QuranRepository(private val context: Context) {
         db.getAllDuas()
     }
 
-    suspend fun getStats(): Pair<Int, Int> = withContext(Dispatchers.IO) {
-        db.getTotalLoadedAyahs() to db.getTotalLoadedTafseers()
+    suspend fun getAllHadiths(): List<HadithItem> = withContext(Dispatchers.IO) {
+        db.getAllHadiths()
     }
 
-    /**
-     * Imports a user-selected JSON file (Full Quran ayahs pack OR Multi-Fiqh Tafseer pack)
-     * directly into the offline SQLite database + FTS index.
-     */
+    suspend fun getStats(): Triple<Int, Int, Int> = withContext(Dispatchers.IO) {
+        Triple(db.getTotalLoadedAyahs(), db.getTotalLoadedTafseers(), db.getTotalLoadedHadiths())
+    }
+
     suspend fun importOfflineJsonPack(uri: Uri): Result<String> = withContext(Dispatchers.IO) {
         try {
             val content = context.contentResolver.openInputStream(uri)
@@ -111,8 +130,13 @@ class QuranRepository(private val context: Context) {
                     db.insertTafseers(entries)
                     Result.success("Imported ${entries.size} Multi-Fiqh Tafseer entries offline!")
                 }
+                first.has("collection") && first.has("hadithNumber") -> {
+                    val hadiths = parseHadiths(content)
+                    db.insertHadiths(hadiths)
+                    Result.success("Imported ${hadiths.size} Hadith entries offline!")
+                }
                 else -> Result.failure(
-                    IllegalArgumentException("Unrecognized JSON pack format. Expected Quran ayahs or Tafseer entries.")
+                    IllegalArgumentException("Unrecognized JSON pack format.")
                 )
             }
         } catch (e: Exception) {
@@ -186,6 +210,27 @@ class QuranRepository(private val context: Context) {
                 hinglish = o.getString("hinglish"),
                 hindi = o.getString("hindi"),
                 reference = o.getString("reference")
+            )
+        }
+    }
+
+    private fun parseHadiths(json: String): List<HadithItem> {
+        val arr = JSONArray(json)
+        return List(arr.length()) { i ->
+            val o = arr.getJSONObject(i)
+            HadithItem(
+                id = o.getInt("id"),
+                collection = o.getString("collection"),
+                bookNumber = o.optString("bookNumber", ""),
+                hadithNumber = o.optString("hadithNumber", ""),
+                grading = o.optString("grading", "Sahih"),
+                topic = o.optString("topic", ""),
+                arabic = o.getString("arabic"),
+                transliteration = o.optString("transliteration", ""),
+                english = o.optString("english", ""),
+                hinglish = o.optString("hinglish", ""),
+                hindi = o.optString("hindi", ""),
+                keywordsHinglish = o.optString("keywordsHinglish", "")
             )
         }
     }
